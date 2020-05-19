@@ -191,11 +191,65 @@
 <li>dubbo是阿里巴巴开源的一个高性能分布式服务框架，使得应用可以通过高性能的RPC实现服务的输出和输入，可以与spring无缝集成</li>
 <li>dubbo是高性能，轻量级的开源java RPC框架，提供三大核心能力：<ul>
 <li>面向接口的远程方法调用（R）</li>
-<li>只能容错和负载均衡（P）</li>
+<li>智能容错和负载均衡（P）</li>
 <li>服务自动注册和发现（C）</li>
 </ul>
 </li>
+<li>Dubbo框架主要是用阿里处理分布式系统中，服务发现与注册以及调用问题的，并且管理调用过程。</li>
 </ul>
+<h4 id="Dubbo分层"><a href="#Dubbo分层" class="headerlink" title="Dubbo分层"></a>Dubbo分层</h4><ul>
+<li>业务层：service</li>
+<li>RPC层：config（配置）、proxy（代理）、registry（注册）、cluster（集群）、monitor（监控）、protocol（协议）</li>
+<li>remoting层：exchange（交换）、transprot（运输）、serizlize（序列号）</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">service</td>
+<td align="left">业务层，业务代码的实现，应用开发者工作在这一层</td>
+</tr>
+<tr>
+<td align="left">config</td>
+<td align="left">配置层，用来初始化配置信息，用来管理Dubbo的配置</td>
+</tr>
+<tr>
+<td align="left">proxy</td>
+<td align="left">代理层，Dubbo中生产中(provider)和消费者(Consumer)都会生成Proxy， 他用来调用远程接口，就像调用本地接口一样，使得调用透明</td>
+</tr>
+<tr>
+<td align="left">registry</td>
+<td align="left">注册层，负责框架的服务注册和发现</td>
+</tr>
+<tr>
+<td align="left">Cluster</td>
+<td align="left">集群容错层，负责远程调用的容错策略，负载均衡策略以及路由策略</td>
+</tr>
+<tr>
+<td align="left">monitor</td>
+<td align="left">监控层，负责监控调用次数和调用时间</td>
+</tr>
+<tr>
+<td align="left">Protocol</td>
+<td align="left">远程调用层，封装调用的具体过程</td>
+</tr>
+<tr>
+<td align="left">Exchange</td>
+<td align="left">信息交互层，建立Request-Responst模型，分装请求响应模式。例如：转化同步请求为异步请求</td>
+</tr>
+<tr>
+<td align="left">Transport</td>
+<td align="left">网络传输层，Dubbo将网络传输封装成统一接口，可以在这之上扩展更多的网络传输方式</td>
+</tr>
+<tr>
+<td align="left">Serialize</td>
+<td align="left">序列化层，负责网络传输的序列化和反序列化</td>
+</tr>
+</tbody></table>
 <h3 id="HTTP与HTTPS的区别"><a href="#HTTP与HTTPS的区别" class="headerlink" title="HTTP与HTTPS的区别"></a>HTTP与HTTPS的区别</h3><ul>
 <li>https协议需要使用CA证书，一般都是收费的</li>
 <li>http协议运行在tcp上，内容传输是明文的；https协议运行在SSL/TLS上，SSL/TLS运行在TCP上，所有传输都是加密的</li>
@@ -221,6 +275,20 @@
 <li>http2.0与SPDY一样支持server push</li>
 <li>http2.0兼容 https、http1.x、http1.0</li>
 <li>如果升级需要从http1.x升级到https再升级到http2.0（Nginx就具备升级条件，参考相关文档即可，方便快捷）</li>
+</ul>
+<h3 id="WBS-工作分解结构"><a href="#WBS-工作分解结构" class="headerlink" title="WBS 工作分解结构"></a>WBS 工作分解结构</h3><ul>
+<li>工作分解结构(work breakdown structure)是把项目工作按阶段可交互成果分解成较小的，易于管理的组成部分的过程。</li>
+<li>WBS归纳和定义了项目的整个工作范围每下降一层，代码对项目工作的更详细定义。WBS是计划过程的中心，也是制定进度计划、资源需求、成本预算、风险管理计划和采购计划的重要基础。WBS还是项目变更的重要基础。</li>
+</ul>
+<h4 id="结构化编码"><a href="#结构化编码" class="headerlink" title="结构化编码"></a>结构化编码</h4><ul>
+<li>编码是最显著和最关键的WBS构成因子，首先编码用于将WBS彻底的结构化。通过编码体系，可以很容易的识别WBS元素的层级关系、分组类别和特性</li>
+<li>并且通过编码使WBS信息与组织结构信息、成本数据、进度数据、合同信息、产品数据、报告信息等紧密的联系起来</li>
+</ul>
+<h4 id="工作包-work-package"><a href="#工作包-work-package" class="headerlink" title="工作包(work package)"></a>工作包(work package)</h4><ul>
+<li>工作包是WBS的最底层元素，一般的工作包是最新的可交付成果。通过工作包可以识别出完成它的活动、成本和组织以及资源信息</li>
+</ul>
+<h4 id="WBS元素"><a href="#WBS元素" class="headerlink" title="WBS元素"></a>WBS元素</h4><ul>
+<li>WBS元素实际上就是WBS结构上的一个个节点，通俗的理解就是组织机构图上的一个个方框，这些防控代表了独立的、具有隶属关系的可交付成果</li>
 </ul>
 <h3 id="个人感悟"><a href="#个人感悟" class="headerlink" title="个人感悟"></a>个人感悟</h3><ul>
 <li>不要重复造轮子，网络库很好，如果不好一定是没找好，既然好为什么不用呢。不要把精力放在重复的事情上。</li>
