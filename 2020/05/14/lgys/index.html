@@ -125,173 +125,51 @@
 </ul>
 </li>
 </ul>
-<h3 id="SOA面向服务架构"><a href="#SOA面向服务架构" class="headerlink" title="SOA面向服务架构"></a>SOA面向服务架构</h3><ul>
-<li>面向服务设计范式的设计原则<ul>
-<li>标准化服务契约：服务遵循相同的契约设计标准。</li>
-<li>服务松散耦合：服务契约对服务消费者松耦合，服务之间松耦合。</li>
-<li>服务抽象：服务契约仅包含必要信息，并且关于服务的信息局限为服务契约中发布的信息。</li>
-<li>服务可重用性：服务可作为重用资源。</li>
-<li>服务自治：服务对其底层运行时执行环境有很大的控制权。</li>
-<li>服务无状态性：服务无状态保证了服务部署的横向扩展性。</li>
-<li>服务可发现性：服务可通过描述性元数据有效发现并解释服务。</li>
-<li>服务可组合性：可以通过组合叠合原子服务形成复杂上层业务服务。</li>
+<h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><ul>
+<li>java中一般认为有23种设计模式，我们不需要都体会，只需要掌握及种设计模式就可以了。</li>
+<li>创建型模式，共五种：工长方法模式、抽象工厂模式、单例模式、建造者模式、原型模式</li>
+<li>结构性模式，共七种：适配器模式、装饰器模式、代理模式、外观模式、桥接模式、组合模式、享元模式</li>
+<li>行为型模式，共十一种：侧罗模式、模板方式模式、观察者模式、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式</li>
 </ul>
-</li>
-<li>SOA架构的基本原则是降低服务间的耦合度，使服务可以类似于模块或组件的形式进行配合使用。<ul>
-<li>模块化服务使用</li>
-<li>服务间低耦合</li>
-<li>类似于oauth的方式使用服务，使服务间通过网络进行调用</li>
+<h4 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h4><p>单例模式分为懒汉式、饿汉式。</p>
+<ul>
+<li>饿汉式：饿汉式实在声明静态全局变量时，就直接将该单例对象new出来的方式。</li>
+<li>懒汉式：声明变量时不会直接创建对象本身，而是在构造方法中进行线程安全处理，加入synchronized锁，并在声明变量时使用volatile进行修饰。</li>
 </ul>
-</li>
-<li>SOA与微服务的区别<ul>
-<li>SOA面向大块业务逻辑，微服务属于单独任务或小块业务逻辑</li>
-<li>SOA着重于中央管理，微服务着重分散管理</li>
-<li>SOA确保能够交互操作，微服务确保执行新功能、快速拓展开发团队</li>
+<h4 id="工厂设计模式"><a href="#工厂设计模式" class="headerlink" title="工厂设计模式"></a>工厂设计模式</h4><ul>
+<li>工厂设计模式分为工厂方法模式和抽象工厂模式</li>
+<li>封装很多的overview可以认为是一种工厂模式的典型使用，通过定义overview进行工厂基础的封装，然后其他overview实现该接口进行不同功能的具体实现</li>
 </ul>
-</li>
+<h5 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h5><ul>
+<li>普通工厂模式就是建立一个工厂类，对实现了统一接口的一些类进行实例的创建</li>
+<li>多个工厂方法模式，是对普通工厂方法模式的改进，在普通工厂方法模式中，如果传递的字符串出错，则不能正确创建对象，而多个工厂方法模式是提供多个工厂方法，分别创建对象。 </li>
+<li>静态工厂方法模式，将上面的多个工厂方法模式里的方法置为静态的，不需要创建实例，直接调用即可。<h5 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h5></li>
+<li>工厂方法模式有一个问题就是，类的创建依赖工厂类，也就是说，如果想要拓展程序，必须对工厂类进行修改，这违背了闭包原则，所以，从设计角度考虑，有一定的问题，如何解决？就用到抽象工厂模式，创建多个工厂类，这样一旦需要增加新的功能，直接增加新的工厂类就可以了，不需要修改之前的代码。</li>
 </ul>
-<h3 id="kubernetes（K8S）"><a href="#kubernetes（K8S）" class="headerlink" title="kubernetes（K8S）"></a>kubernetes（K8S）</h3><ul>
-<li>企业级微服务框架</li>
-<li>node是集群中的工作节点，运行真正的应用程序，在node上k8s管理的最小运行单元是Pod。<ul>
-<li>node上运行着k8s以及相关服务进程，这些服务进程负责pod的创建、启动、监控、重启、销毁、以及实现软件模式的负载均衡</li>
+<h4 id="建造者模式"><a href="#建造者模式" class="headerlink" title="建造者模式"></a>建造者模式</h4><ul>
+<li>建造者模式通过builder将对象build出来，然后通过简单的方式将对象进行处理</li>
+<li>例如地图量测小工具，通过build进行创建，并使用小工具进行量测功能</li>
 </ul>
-</li>
-<li>Pod是k8s的最基本的操作单元，包含一个或多个紧密相关的容器，一个Pod可以被一个容器换的环境看做应用层的“逻辑宿主机”</li>
-<li>Pod在k8s的世界中，每一个pod会分配一个ip地址，但这个ip地址会随着pod的销毁而消失，这就有一个问题了，如果一组pod组成的一个集群来提供服务，那么如何来方位它呢？通过Services</li>
-<li>一个services可以看作一组提供相同服务的pod的对外访问接口</li>
+<h5 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h5><ul>
+<li>适配器模式可以认为是简易化的中间件，具体是将两个不兼容的对象通过适配器进行联通并使用</li>
 </ul>
-<h3 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h3><ul>
-<li>Nginx是一个代理服务器的角色，为了避免单独一个服务器压力过大，而将来自不同用户的请求发送给不同的服务器，形成1对多的关系的一种技术</li>
-<li>Nginx分配方式<ul>
-<li>权重方式（自定义），轮询进行分配，通过权重提高服务器轮询的几率</li>
-<li>根据ip分配方式，按照基于客户端的ip的分配方式，保障相同客户端的请求一直发送给相同的服务器，可以保证session会话</li>
-<li>最少连接方式</li>
-<li>最快响应方式</li>
-<li>根据url分配（自定义），可以在指定url请求某一台服务器，例如下载某资源时会去同一台服务器去下载，这样会提高利用率</li>
+<h5 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h5><ul>
+<li>观察者模式的核心是接口回调，而接口回调也可以认为是简单的观察者模式。</li>
+<li>例如定位组件的监听器，通过注册的方式使观察者注册进来，观察被观察者定位的改变。</li>
 </ul>
-</li>
-<li>在Nginx中如果有某一台服务器宕机了，那么在Nginx轮询发现后，会将改服务器剔除</li>
+<h5 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h5><ul>
+<li>策略模式可以使封装一个统一的接口，然后其他的具体实现使用这个接口进行具体实现，外部调用方式都是同一个方法</li>
+<li>量测模块中的具体算法量测calcalator可以认为是一个策略模式，使用不同的计算模块实现计算方式</li>
 </ul>
-<h3 id="Spring-Boot-与-Spring-Cloud"><a href="#Spring-Boot-与-Spring-Cloud" class="headerlink" title="Spring Boot 与 Spring Cloud"></a>Spring Boot 与 Spring Cloud</h3><ul>
-<li>Spring boot 是 Spring 的一套快速配置脚手架，可以基于spring boot 快速开发单个微服务</li>
-<li>Spring Cloud是一个基于Spring Boot实现的云应用开发工具</li>
-<li>Spring boot专注于快速、方便集成的单个个体，Spring Cloud是关注全局的服务治理框架</li>
-<li>spring boot使用了默认大于配置的理念，很多集成方案已经帮你选择好了，能不配置就不配置，Spring Cloud很大的一部分是基于Spring boot来实现</li>
-<li>spring boot不是微服务技术,spring cloud才是微服务技术</li>
-<li>spring boot 特点<ul>
-<li>快速开发spring应用的框架</li>
-<li>内嵌tomcat和jetty容器，不需要单独安装容器，jar包直接发布一个web应用</li>
-<li>简化maven配置，parent这种方式，一站式引入需要的各种依赖</li>
-<li>基于注解的零配置思想</li>
-<li>和各种流行框架，spring web mvc，mybatis，spring cloud无缝整合</li>
+<h5 id="装饰模式"><a href="#装饰模式" class="headerlink" title="装饰模式"></a>装饰模式</h5><ul>
+<li>装饰模式就是给一个对象增加一些新的功能，而且是动态的，要求装饰对象和被装饰对象实现同一个接口，装饰对象持有被装饰对象的实例</li>
 </ul>
-</li>
-</ul>
-<h3 id="Dubbo（读音同double）"><a href="#Dubbo（读音同double）" class="headerlink" title="Dubbo（读音同double）"></a>Dubbo（读音同double）</h3><ul>
-<li>dubbo是阿里巴巴开源的一个高性能分布式服务框架，使得应用可以通过高性能的RPC实现服务的输出和输入，可以与spring无缝集成</li>
-<li>dubbo是高性能，轻量级的开源java RPC框架，提供三大核心能力：<ul>
-<li>面向接口的远程方法调用（R）</li>
-<li>智能容错和负载均衡（P）</li>
-<li>服务自动注册和发现（C）</li>
-</ul>
-</li>
-<li>Dubbo框架主要是用阿里处理分布式系统中，服务发现与注册以及调用问题的，并且管理调用过程。</li>
-</ul>
-<h4 id="Dubbo分层"><a href="#Dubbo分层" class="headerlink" title="Dubbo分层"></a>Dubbo分层</h4><ul>
-<li>业务层：service</li>
-<li>RPC层：config（配置）、proxy（代理）、registry（注册）、cluster（集群）、monitor（监控）、protocol（协议）</li>
-<li>remoting层：exchange（交换）、transprot（运输）、serizlize（序列号）</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="left">名称</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">service</td>
-<td align="left">业务层，业务代码的实现，应用开发者工作在这一层</td>
-</tr>
-<tr>
-<td align="left">config</td>
-<td align="left">配置层，用来初始化配置信息，用来管理Dubbo的配置</td>
-</tr>
-<tr>
-<td align="left">proxy</td>
-<td align="left">代理层，Dubbo中生产中(provider)和消费者(Consumer)都会生成Proxy， 他用来调用远程接口，就像调用本地接口一样，使得调用透明</td>
-</tr>
-<tr>
-<td align="left">registry</td>
-<td align="left">注册层，负责框架的服务注册和发现</td>
-</tr>
-<tr>
-<td align="left">Cluster</td>
-<td align="left">集群容错层，负责远程调用的容错策略，负载均衡策略以及路由策略</td>
-</tr>
-<tr>
-<td align="left">monitor</td>
-<td align="left">监控层，负责监控调用次数和调用时间</td>
-</tr>
-<tr>
-<td align="left">Protocol</td>
-<td align="left">远程调用层，封装调用的具体过程</td>
-</tr>
-<tr>
-<td align="left">Exchange</td>
-<td align="left">信息交互层，建立Request-Responst模型，分装请求响应模式。例如：转化同步请求为异步请求</td>
-</tr>
-<tr>
-<td align="left">Transport</td>
-<td align="left">网络传输层，Dubbo将网络传输封装成统一接口，可以在这之上扩展更多的网络传输方式</td>
-</tr>
-<tr>
-<td align="left">Serialize</td>
-<td align="left">序列化层，负责网络传输的序列化和反序列化</td>
-</tr>
-</tbody></table>
-<h3 id="HTTP与HTTPS的区别"><a href="#HTTP与HTTPS的区别" class="headerlink" title="HTTP与HTTPS的区别"></a>HTTP与HTTPS的区别</h3><ul>
-<li>https协议需要使用CA证书，一般都是收费的</li>
-<li>http协议运行在tcp上，内容传输是明文的；https协议运行在SSL/TLS上，SSL/TLS运行在TCP上，所有传输都是加密的</li>
-<li>http与https是完全不同的连接方式，用的端口也不一样，http是80，https是443</li>
-<li>https可以有效的防止运营商劫持</li>
-<li>总的来说，https比http要安全很多</li>
-</ul>
-<h3 id="http（1-x）的SPDY优化"><a href="#http（1-x）的SPDY优化" class="headerlink" title="http（1.x）的SPDY优化"></a>http（1.x）的SPDY优化</h3><ul>
-<li>降低延迟：引用了多路复用（multiplexing）（主要原理同线程池），共享一个tcp连接，切记，这里指的共享是通道共享，即不用重新创立通道，但是必须发送一个请求并接到响应后才能发送下一个请求。</li>
-<li>请求优先级：引用多路复用后为了避免主要请求被阻塞，则引入请求优先级</li>
-<li>header压缩：头中很多固定的东西，所以优化了header的压缩方式</li>
-<li>基于https的加密协议传输：使用了https的加密协议，提高安全性</li>
-<li>服务端推送（server push）：假如使用了A.css文件，服务器会同时将a.css中使用的b.js也推送过来，不用重新请求了，直接从内存中获取js文件即可。</li>
-</ul>
-<h3 id="http2-0，SPDY的升级版"><a href="#http2-0，SPDY的升级版" class="headerlink" title="http2.0，SPDY的升级版"></a>http2.0，SPDY的升级版</h3><ul>
-<li>http2.0支持明文的http传输，而SPDY强制使用https（非明文）</li>
-<li>http2.0的头再次优化，http2.0使用HPACK，而SPDY使用的是DEFLATE</li>
-</ul>
-<h3 id="http2-0与http1-x相比"><a href="#http2-0与http1-x相比" class="headerlink" title="http2.0与http1.x相比"></a>http2.0与http1.x相比</h3><ul>
-<li>新的二进制格式：http1.x是基于文本进行的解析，文本解析效率低于二进制解析机制</li>
-<li>多路复用：这里的多路复用在http1.x的路线复用基础上，实现了可以同时发送多个请求，并相应多个请求，请求与相应通过requese产生的id进行关联。web请求默认请求通道是7个</li>
-<li>header压缩：再次优化头压缩方式，并通讯双方各自cache一份header fields（其实就是字典）</li>
-<li>http2.0与SPDY一样支持server push</li>
-<li>http2.0兼容 https、http1.x、http1.0</li>
-<li>如果升级需要从http1.x升级到https再升级到http2.0（Nginx就具备升级条件，参考相关文档即可，方便快捷）</li>
-</ul>
-<h3 id="WBS-工作分解结构"><a href="#WBS-工作分解结构" class="headerlink" title="WBS 工作分解结构"></a>WBS 工作分解结构</h3><ul>
-<li>工作分解结构(work breakdown structure)是把项目工作按阶段可交互成果分解成较小的，易于管理的组成部分的过程。</li>
-<li>WBS归纳和定义了项目的整个工作范围每下降一层，代码对项目工作的更详细定义。WBS是计划过程的中心，也是制定进度计划、资源需求、成本预算、风险管理计划和采购计划的重要基础。WBS还是项目变更的重要基础。</li>
-</ul>
-<h4 id="结构化编码"><a href="#结构化编码" class="headerlink" title="结构化编码"></a>结构化编码</h4><ul>
-<li>编码是最显著和最关键的WBS构成因子，首先编码用于将WBS彻底的结构化。通过编码体系，可以很容易的识别WBS元素的层级关系、分组类别和特性</li>
-<li>并且通过编码使WBS信息与组织结构信息、成本数据、进度数据、合同信息、产品数据、报告信息等紧密的联系起来</li>
-</ul>
-<h4 id="工作包-work-package"><a href="#工作包-work-package" class="headerlink" title="工作包(work package)"></a>工作包(work package)</h4><ul>
-<li>工作包是WBS的最底层元素，一般的工作包是最新的可交付成果。通过工作包可以识别出完成它的活动、成本和组织以及资源信息</li>
-</ul>
-<h4 id="WBS元素"><a href="#WBS元素" class="headerlink" title="WBS元素"></a>WBS元素</h4><ul>
-<li>WBS元素实际上就是WBS结构上的一个个节点，通俗的理解就是组织机构图上的一个个方框，这些防控代表了独立的、具有隶属关系的可交付成果</li>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><ul>
+<li>设计模式是一种认为定制的模式，而在实际开发中，在不理解或没有认知到某些模式的时候，已经无意间使用了很多的模式。不要因为要使用某种模式而去使用模式，应该是在开发过程中顺其自然的使用了某种模式后根据这种模式去完善。</li>
+<li>设计模式的初衷是提高代码效率，高内部低耦合的原则。</li>
 </ul>
 <h3 id="个人感悟"><a href="#个人感悟" class="headerlink" title="个人感悟"></a>个人感悟</h3><ul>
 <li>不要重复造轮子，网络库很好，如果不好一定是没找好，既然好为什么不用呢。不要把精力放在重复的事情上。</li>
 <li>专业的事情交给专业的人去做。</li>
 </ul>
-</div></article></div></main><footer><div class="paginator"></div><div class="copyright"><p>© 2015 - 2020 <a href="http://yoursite.com">Zhh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+</div></article></div></main><footer><div class="paginator"><a href="/2020/06/03/FBS_LGYS/" class="prev">上一篇</a></div><div class="copyright"><p>© 2015 - 2020 <a href="http://yoursite.com">Zhh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

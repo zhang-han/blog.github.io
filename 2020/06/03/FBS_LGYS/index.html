@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> FBS_LGYS · Hexo</title><meta name="description" content="FBS_LGYS - Zhh"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="Hexo"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">FBS_LGYS</h1><div class="post-info">2020年6月3日</div><div class="post-content"><h2 id="分布式系统设计总鉴"><a href="#分布式系统设计总鉴" class="headerlink" title="分布式系统设计总鉴"></a>分布式系统设计总鉴</h2><h3 id="SOA面向服务架构"><a href="#SOA面向服务架构" class="headerlink" title="SOA面向服务架构"></a>SOA面向服务架构</h3><ul>
+<li>面向服务设计范式的设计原则<ul>
+<li>标准化服务契约：服务遵循相同的契约设计标准。</li>
+<li>服务松散耦合：服务契约对服务消费者松耦合，服务之间松耦合。</li>
+<li>服务抽象：服务契约仅包含必要信息，并且关于服务的信息局限为服务契约中发布的信息。</li>
+<li>服务可重用性：服务可作为重用资源。</li>
+<li>服务自治：服务对其底层运行时执行环境有很大的控制权。</li>
+<li>服务无状态性：服务无状态保证了服务部署的横向扩展性。</li>
+<li>服务可发现性：服务可通过描述性元数据有效发现并解释服务。</li>
+<li>服务可组合性：可以通过组合叠合原子服务形成复杂上层业务服务。</li>
+</ul>
+</li>
+<li>SOA架构的基本原则是降低服务间的耦合度，使服务可以类似于模块或组件的形式进行配合使用。<ul>
+<li>模块化服务使用</li>
+<li>服务间低耦合</li>
+<li>类似于oauth的方式使用服务，使服务间通过网络进行调用</li>
+</ul>
+</li>
+<li>SOA与微服务的区别<ul>
+<li>SOA面向大块业务逻辑，微服务属于单独任务或小块业务逻辑</li>
+<li>SOA着重于中央管理，微服务着重分散管理</li>
+<li>SOA确保能够交互操作，微服务确保执行新功能、快速拓展开发团队</li>
+</ul>
+</li>
+</ul>
+<h3 id="kubernetes（K8S）"><a href="#kubernetes（K8S）" class="headerlink" title="kubernetes（K8S）"></a>kubernetes（K8S）</h3><ul>
+<li>企业级微服务框架</li>
+<li>node是集群中的工作节点，运行真正的应用程序，在node上k8s管理的最小运行单元是Pod。<ul>
+<li>node上运行着k8s以及相关服务进程，这些服务进程负责pod的创建、启动、监控、重启、销毁、以及实现软件模式的负载均衡</li>
+</ul>
+</li>
+<li>Pod是k8s的最基本的操作单元，包含一个或多个紧密相关的容器，一个Pod可以被一个容器换的环境看做应用层的“逻辑宿主机”</li>
+<li>Pod在k8s的世界中，每一个pod会分配一个ip地址，但这个ip地址会随着pod的销毁而消失，这就有一个问题了，如果一组pod组成的一个集群来提供服务，那么如何来方位它呢？通过Services</li>
+<li>一个services可以看作一组提供相同服务的pod的对外访问接口</li>
+</ul>
+<h3 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h3><ul>
+<li>Nginx是一个代理服务器的角色，为了避免单独一个服务器压力过大，而将来自不同用户的请求发送给不同的服务器，形成1对多的关系的一种技术</li>
+<li>Nginx分配方式<ul>
+<li>权重方式（自定义），轮询进行分配，通过权重提高服务器轮询的几率</li>
+<li>根据ip分配方式，按照基于客户端的ip的分配方式，保障相同客户端的请求一直发送给相同的服务器，可以保证session会话</li>
+<li>最少连接方式</li>
+<li>最快响应方式</li>
+<li>根据url分配（自定义），可以在指定url请求某一台服务器，例如下载某资源时会去同一台服务器去下载，这样会提高利用率</li>
+</ul>
+</li>
+<li>在Nginx中如果有某一台服务器宕机了，那么在Nginx轮询发现后，会将改服务器剔除</li>
+</ul>
+<h3 id="Spring-Boot-与-Spring-Cloud"><a href="#Spring-Boot-与-Spring-Cloud" class="headerlink" title="Spring Boot 与 Spring Cloud"></a>Spring Boot 与 Spring Cloud</h3><ul>
+<li>Spring boot 是 Spring 的一套快速配置脚手架，可以基于spring boot 快速开发单个微服务</li>
+<li>Spring Cloud是一个基于Spring Boot实现的云应用开发工具</li>
+<li>Spring boot专注于快速、方便集成的单个个体，Spring Cloud是关注全局的服务治理框架</li>
+<li>spring boot使用了默认大于配置的理念，很多集成方案已经帮你选择好了，能不配置就不配置，Spring Cloud很大的一部分是基于Spring boot来实现</li>
+<li>spring boot不是微服务技术,spring cloud才是微服务技术</li>
+<li>spring boot 特点<ul>
+<li>快速开发spring应用的框架</li>
+<li>内嵌tomcat和jetty容器，不需要单独安装容器，jar包直接发布一个web应用</li>
+<li>简化maven配置，parent这种方式，一站式引入需要的各种依赖</li>
+<li>基于注解的零配置思想</li>
+<li>和各种流行框架，spring web mvc，mybatis，spring cloud无缝整合</li>
+</ul>
+</li>
+</ul>
+<h3 id="Dubbo（读音同double）"><a href="#Dubbo（读音同double）" class="headerlink" title="Dubbo（读音同double）"></a>Dubbo（读音同double）</h3><ul>
+<li>dubbo是阿里巴巴开源的一个高性能分布式服务框架，使得应用可以通过高性能的RPC实现服务的输出和输入，可以与spring无缝集成</li>
+<li>dubbo是高性能，轻量级的开源java RPC框架，提供三大核心能力：<ul>
+<li>面向接口的远程方法调用（R）</li>
+<li>智能容错和负载均衡（P）</li>
+<li>服务自动注册和发现（C）</li>
+</ul>
+</li>
+<li>Dubbo框架主要是用阿里处理分布式系统中，服务发现与注册以及调用问题的，并且管理调用过程。</li>
+</ul>
+<h4 id="Dubbo分层"><a href="#Dubbo分层" class="headerlink" title="Dubbo分层"></a>Dubbo分层</h4><ul>
+<li>业务层：service</li>
+<li>RPC层：config（配置）、proxy（代理）、registry（注册）、cluster（集群）、monitor（监控）、protocol（协议）</li>
+<li>remoting层：exchange（交换）、transprot（运输）、serizlize（序列号）</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">service</td>
+<td align="left">业务层，业务代码的实现，应用开发者工作在这一层</td>
+</tr>
+<tr>
+<td align="left">config</td>
+<td align="left">配置层，用来初始化配置信息，用来管理Dubbo的配置</td>
+</tr>
+<tr>
+<td align="left">proxy</td>
+<td align="left">代理层，Dubbo中生产中(provider)和消费者(Consumer)都会生成Proxy， 他用来调用远程接口，就像调用本地接口一样，使得调用透明</td>
+</tr>
+<tr>
+<td align="left">registry</td>
+<td align="left">注册层，负责框架的服务注册和发现</td>
+</tr>
+<tr>
+<td align="left">Cluster</td>
+<td align="left">集群容错层，负责远程调用的容错策略，负载均衡策略以及路由策略</td>
+</tr>
+<tr>
+<td align="left">monitor</td>
+<td align="left">监控层，负责监控调用次数和调用时间</td>
+</tr>
+<tr>
+<td align="left">Protocol</td>
+<td align="left">远程调用层，封装调用的具体过程</td>
+</tr>
+<tr>
+<td align="left">Exchange</td>
+<td align="left">信息交互层，建立Request-Responst模型，分装请求响应模式。例如：转化同步请求为异步请求</td>
+</tr>
+<tr>
+<td align="left">Transport</td>
+<td align="left">网络传输层，Dubbo将网络传输封装成统一接口，可以在这之上扩展更多的网络传输方式</td>
+</tr>
+<tr>
+<td align="left">Serialize</td>
+<td align="left">序列化层，负责网络传输的序列化和反序列化</td>
+</tr>
+</tbody></table>
+<h3 id="HTTP与HTTPS的区别"><a href="#HTTP与HTTPS的区别" class="headerlink" title="HTTP与HTTPS的区别"></a>HTTP与HTTPS的区别</h3><ul>
+<li>https协议需要使用CA证书，一般都是收费的</li>
+<li>http协议运行在tcp上，内容传输是明文的；https协议运行在SSL/TLS上，SSL/TLS运行在TCP上，所有传输都是加密的</li>
+<li>http与https是完全不同的连接方式，用的端口也不一样，http是80，https是443</li>
+<li>https可以有效的防止运营商劫持</li>
+<li>总的来说，https比http要安全很多</li>
+</ul>
+<h3 id="http（1-x）的SPDY优化"><a href="#http（1-x）的SPDY优化" class="headerlink" title="http（1.x）的SPDY优化"></a>http（1.x）的SPDY优化</h3><ul>
+<li>降低延迟：引用了多路复用（multiplexing）（主要原理同线程池），共享一个tcp连接，切记，这里指的共享是通道共享，即不用重新创立通道，但是必须发送一个请求并接到响应后才能发送下一个请求。</li>
+<li>请求优先级：引用多路复用后为了避免主要请求被阻塞，则引入请求优先级</li>
+<li>header压缩：头中很多固定的东西，所以优化了header的压缩方式</li>
+<li>基于https的加密协议传输：使用了https的加密协议，提高安全性</li>
+<li>服务端推送（server push）：假如使用了A.css文件，服务器会同时将a.css中使用的b.js也推送过来，不用重新请求了，直接从内存中获取js文件即可。</li>
+</ul>
+<h3 id="http2-0，SPDY的升级版"><a href="#http2-0，SPDY的升级版" class="headerlink" title="http2.0，SPDY的升级版"></a>http2.0，SPDY的升级版</h3><ul>
+<li>http2.0支持明文的http传输，而SPDY强制使用https（非明文）</li>
+<li>http2.0的头再次优化，http2.0使用HPACK，而SPDY使用的是DEFLATE</li>
+</ul>
+<h3 id="http2-0与http1-x相比"><a href="#http2-0与http1-x相比" class="headerlink" title="http2.0与http1.x相比"></a>http2.0与http1.x相比</h3><ul>
+<li>新的二进制格式：http1.x是基于文本进行的解析，文本解析效率低于二进制解析机制</li>
+<li>多路复用：这里的多路复用在http1.x的路线复用基础上，实现了可以同时发送多个请求，并相应多个请求，请求与相应通过requese产生的id进行关联。web请求默认请求通道是7个</li>
+<li>header压缩：再次优化头压缩方式，并通讯双方各自cache一份header fields（其实就是字典）</li>
+<li>http2.0与SPDY一样支持server push</li>
+<li>http2.0兼容 https、http1.x、http1.0</li>
+<li>如果升级需要从http1.x升级到https再升级到http2.0（Nginx就具备升级条件，参考相关文档即可，方便快捷）</li>
+</ul>
+<h3 id="WBS-工作分解结构"><a href="#WBS-工作分解结构" class="headerlink" title="WBS 工作分解结构"></a>WBS 工作分解结构</h3><ul>
+<li>工作分解结构(work breakdown structure)是把项目工作按阶段可交互成果分解成较小的，易于管理的组成部分的过程。</li>
+<li>WBS归纳和定义了项目的整个工作范围每下降一层，代码对项目工作的更详细定义。WBS是计划过程的中心，也是制定进度计划、资源需求、成本预算、风险管理计划和采购计划的重要基础。WBS还是项目变更的重要基础。</li>
+</ul>
+<h4 id="结构化编码"><a href="#结构化编码" class="headerlink" title="结构化编码"></a>结构化编码</h4><ul>
+<li>编码是最显著和最关键的WBS构成因子，首先编码用于将WBS彻底的结构化。通过编码体系，可以很容易的识别WBS元素的层级关系、分组类别和特性</li>
+<li>并且通过编码使WBS信息与组织结构信息、成本数据、进度数据、合同信息、产品数据、报告信息等紧密的联系起来</li>
+</ul>
+<h4 id="工作包-work-package"><a href="#工作包-work-package" class="headerlink" title="工作包(work package)"></a>工作包(work package)</h4><ul>
+<li>工作包是WBS的最底层元素，一般的工作包是最新的可交付成果。通过工作包可以识别出完成它的活动、成本和组织以及资源信息</li>
+</ul>
+<h4 id="WBS元素"><a href="#WBS元素" class="headerlink" title="WBS元素"></a>WBS元素</h4><ul>
+<li>WBS元素实际上就是WBS结构上的一个个节点，通俗的理解就是组织机构图上的一个个方框，这些防控代表了独立的、具有隶属关系的可交付成果</li>
+</ul>
+<h3 id="分布式系统简介"><a href="#分布式系统简介" class="headerlink" title="分布式系统简介"></a>分布式系统简介</h3><ul>
+<li>分布式组成总体结构：<ul>
+<li>前端展示与操作</li>
+<li>分布式组件<ul>
+<li>后端存储系统</li>
+<li>后端计算系统</li>
+<li>各种中间件（消息中间件、远程过程调用中间件、数据库访问中间件等）</li>
+<li>集群管理系统（分布式协调组件）</li>
+</ul>
+</li>
+<li>单机组件<ul>
+<li>单机操作系统（Linux、windows等）</li>
+<li>硬件、网络等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>分布式系统一般都有对应的web前端，提供用户随时随地的访问；或者有移动端、桌面端也是可以的</li>
+<li>分布式一定要有一个强大而稳定的后端进行支撑，一般基于Linux，主要原因是开源操作系统成本低，开源软件可以定制</li>
+<li>分布式中有很多的系统组成了一个集群，所以需要对集群进行管理，从而衍生出了一些非常重要的协调组件。用来协调不同机器之间的工作，这个协调系统大都基于一些著名的分布式一致性协议（如Paxos、Raft等）。这些系统不仅要支持分布式协调功能，还要有资源的管理和分配功能。</li>
+<li>为了满足大规模数据的存储需要，要有海量数据后端存储系统。</li>
+<li>为了满足大规模的计算需要，要有能够分析海量数据的后端计算系统。</li>
+<li>分布式的扩展一般分为水平扩展和垂直扩展<ul>
+<li>水平扩展是指通过增加额外的节点来扩展系统的处理能力</li>
+<li>垂直扩展是指通过升级单个节点（CPU、内存、硬盘）来进行扩展</li>
+</ul>
+</li>
+</ul>
+<h4 id="分布式存储系统"><a href="#分布式存储系统" class="headerlink" title="分布式存储系统"></a>分布式存储系统</h4><h5 id="一致性模型"><a href="#一致性模型" class="headerlink" title="一致性模型"></a>一致性模型</h5><ul>
+<li>强一致性<ul>
+<li>当更新操作完成之后，任何多个后续进程或者线程的访问都会返回最新的更新过的值。这种是对用户最友好的，就是用户上一次写什么，下一次就保证能读到什么。但是这种实现对性能影响较大。</li>
+</ul>
+</li>
+<li>弱一致性<ul>
+<li>系统并不保证续进程或者线程的访问都会返回最新的更新过的值。系统在数据写入成功之后，不承诺立即可以读到最新写入的值，也不会具体的承诺多久之后可以读到。但会尽可能保证在某个时间级别（比如秒级别）之后，可以让数据达到一致性状态。</li>
+</ul>
+</li>
+<li>最终一致性（采用最终一致性的数据库系统，NoSQL）<ul>
+<li>弱一致性的特定形式。系统保证在没有后续更新的前提下，系统最终返回上一次更新操作的值。在没有故障发生的前提下，不一致窗口的时间主要受通信延迟，系统负载和复制副本的个数影响。DNS是一个典型的最终一致性系统。</li>
+</ul>
+</li>
+<li>最终一致性模型的变种<ul>
+<li>因果一致性：如果A进程在更新之后向B进程通知更新的完成，那么B的访问操作将会返回更新的值。如果没有因果关系的C进程将会遵循最终一致性的规则。</li>
+<li>读己所写一致性：因果一致性的特定形式。一个进程总可以读到自己更新的数据。</li>
+<li>会话一致性：读己所写一致性的特定形式。进程在访问存储系统同一个会话内，系统保证该进程读己之所写。</li>
+<li>单调读一致性：如果一个进程已经读取到一个特定值，那么该进程不会读取到该值以前的任何值。</li>
+<li>单调写一致性：系统保证对同一个进程的写操作串行化。</li>
+</ul>
+</li>
+<li>上述最终一致性的不同方式可以进行组合，例如单调读一致性和读己之所写一致性就可以组合实现。并且从实践的角度来看，这两者的组合，读取自己更新的 数据，和一旦读取到最新的版本不会再读取旧版本，对于此架构上的程序开发来说，会少很多额外的烦恼。</li>
+<li>采用最终一致性的数据库系统，统称为NoSQL（Not only SQL）系统，根据数据库模型的不同，NoSQL系统又分为以下几大类<ul>
+<li>基于键值对的：Memcached、Redis</li>
+<li>基于列存储的：Google BigTable、Apache HBase、Apache Cassandra</li>
+<li>基于文档的：MongoDB、CouchDB</li>
+<li>基于图的：Neo4j、OrientDB</li>
+</ul>
+</li>
+</ul>
+<h5 id="事物的ACID属性（分布式中数据库事物）"><a href="#事物的ACID属性（分布式中数据库事物）" class="headerlink" title="事物的ACID属性（分布式中数据库事物）"></a>事物的ACID属性（分布式中数据库事物）</h5><ul>
+<li>原子性（Atomicity）<ul>
+<li>原子性是指事物是一个不可分割的工作单位，事物中的操作要么都发生，要么都不发生</li>
+</ul>
+</li>
+<li>一致性（Consistency）<ul>
+<li>事物必须是数据库从一个一致性状态变换到另一个一致性状态</li>
+</ul>
+</li>
+<li>隔离性（Isolation）<ul>
+<li>一个事物的执行不能被其他事物干扰，即一个事物的内部操作及使用的数据对并发的其他事物是隔离的，并发执行的各个事物之间不能互相干扰</li>
+</ul>
+</li>
+<li>持久性（Durability）<ul>
+<li>一个事物一旦被提交，它对数据库的改变是永久性的，接下来的操作和数据库故障不应该对其有任何影响</li>
+</ul>
+</li>
+</ul>
+<h5 id="分布式CAP（分布式中数据库事物）"><a href="#分布式CAP（分布式中数据库事物）" class="headerlink" title="分布式CAP（分布式中数据库事物）"></a>分布式CAP（分布式中数据库事物）</h5><ul>
+<li>由于在分布式中，无法保证ACID的一致性（Consistency），即分布式服务中如果某一个存储服务宕机后，其他存储服务可以继续运行，且不受影响。所以不适用ACID属性。</li>
+<li>一致性（Consistency）<ul>
+<li>指数据不同副本之间的一致性</li>
+</ul>
+</li>
+<li>可用性（Availability）<ul>
+<li>每个请求都能接受到一个响应，无论相应成功或失败</li>
+</ul>
+</li>
+<li>分区容错（Partition Tolerance）<ul>
+<li>系统应该能持续提供服务，即使系统内部有消息丢失</li>
+</ul>
+</li>
+<li>大部分情况下，系统设计都会保留P属性，在C和A之间进行二选一<ul>
+<li>CP系统：Google BigTable，HBase，MongoDB，Redis，MemCacheDB，这些存储架构都是放弃了高可用性（Avaibility）而选择CP属性的</li>
+<li>AP系统：Amazon Dynamo系统以及它的衍生系统Apcache Cassandra和Voldemort都是属于AP系统</li>
+<li>CA系统：Apache Kafka是一个比较经典的CA系统</li>
+</ul>
+</li>
+</ul>
+<h5 id="BASE（分布式中数据库事物）"><a href="#BASE（分布式中数据库事物）" class="headerlink" title="BASE（分布式中数据库事物）"></a>BASE（分布式中数据库事物）</h5><ul>
+<li>BASE理论是对CAP理论的延伸，核心思想是即使无法做到强一致性（Strong Consistency，CAP的一致性就是强一致性），但应用可以采用适合的方式达到最终一致性（Eventual Consitency）。Redis等众多系统构建于这个理论之上。</li>
+<li>基本可用（Basically Available）<ul>
+<li>基本可用是指分布式系统在出现故障的时候，允许损失部分可用性，即保证核心可用。电商大促时，为了应对访问量激增，部分用户可能会被引导到降级页面，服务层也可能只提供降级服务。这就是损失部分可用性的体现。</li>
+</ul>
+</li>
+<li>软状态（ Soft State）<ul>
+<li>软状态是指允许系统存在中间状态，而该中间状态不会影响系统整体可用性。分布式存储中一般一份数据至少会有三个副本，允许不同节点间副本同步的延时就是软状态的体现。mysql replication的异步复制也是一种体现。</li>
+</ul>
+</li>
+<li>最终一致性（ Eventual Consistency）<ul>
+<li>最终一致性是指系统中的所有数据副本经过一定时间后，最终能够达到一致的状态。弱一致性和强一致性相反，最终一致性是弱一致性的一种特殊情况。</li>
+</ul>
+</li>
+</ul>
+<h5 id="SLA服务等级协议（service-level-agreement）"><a href="#SLA服务等级协议（service-level-agreement）" class="headerlink" title="SLA服务等级协议（service level agreement）"></a>SLA服务等级协议（service level agreement）</h5><ul>
+<li>是在一定开销下为保障服务的性能和可用性，服务提供商与用户间定义的一种双方认可的协定。通常这个开销是驱动提供服务质量的主要因素</li>
+<li>一般SLA等级分为2个9、3个9、4个9、5个9…..，9越多代表全年服务可用时间越长服务更可靠，停机时间越短，反之亦然。<ul>
+<li>计算方式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    1年 &#x3D; 365天 &#x3D; 8760小时</span><br><span class="line">    99.9 &#x3D; 8760 * 0.1% &#x3D; 8760 * 0.001 &#x3D; 8.76小时</span><br><span class="line">    99.99 &#x3D; 8760 * 0.0001 &#x3D; 0.876小时 &#x3D; 0.876 * 60 &#x3D; 52.6分钟</span><br><span class="line">    99.999 &#x3D; 8760 * 0.00001 &#x3D; 0.0876小时 &#x3D; 0.0876 * 60 &#x3D; 5.26分钟</span><br><span class="line">    &#96;&#96;&#96; </span><br><span class="line">#### 分布式计算系统</span><br><span class="line">##### 批处理分布式计算系统</span><br><span class="line">- 主要采用MapReduce方式进行批处理，特征是</span><br><span class="line">    - 数据集能够被拆分</span><br><span class="line">    - 可以单独进行计算，不同数据集之间没有依赖</span><br><span class="line">    - 计算对实时性要求不高，这是因为MapReduce计算的过程非常耗时</span><br><span class="line">- 主要结构为：</span><br></pre></td></tr></table></figure>
+map(&lt;K1,V1&gt;) –&gt; list(&lt;K2,V2&gt;)<br>reduce(&lt;K2,list(V2)&gt;) –&gt; list(V3)<br>```<h5 id="流处理分布式计算系统"><a href="#流处理分布式计算系统" class="headerlink" title="流处理分布式计算系统"></a>流处理分布式计算系统</h5></li>
+</ul>
+</li>
+<li>对于那些不断有新数据进来，而且对实时性要求很高的计算，MapReduce就不适用了，于是流处理应运而生。</li>
+<li>流处理分为两大类<ul>
+<li>微批处理（micro-batch processing）系统<ul>
+<li>当新数据到达时，并不立即进行处理，而是等待一段时间后，然后将这一段时间内到达的数据成批处理。这类系统的例子有Apache Spark</li>
+</ul>
+</li>
+<li>真正的流处理（true stream processing）系统<ul>
+<li>当一条新数据到达后，立即进行处理，这类系统的例子有Apache Storm、Apache Samza、 Kafka Streams</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a href="/2020/05/14/lgys/" class="next">下一篇</a></div><div class="copyright"><p>© 2015 - 2020 <a href="http://yoursite.com">Zhh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
