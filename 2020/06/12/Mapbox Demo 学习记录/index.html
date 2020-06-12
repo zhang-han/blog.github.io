@@ -1,0 +1,1015 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Mapbox Demo 学习记录 · Hexo</title><meta name="description" content="Mapbox Demo 学习记录 - Zhh"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="Hexo"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Mapbox Demo 学习记录</h1><div class="post-info">2020年6月12日</div><div class="post-content"><h1 id="Mapbox-Demo-学习记录"><a href="#Mapbox-Demo-学习记录" class="headerlink" title="Mapbox Demo 学习记录"></a>Mapbox Demo 学习记录</h1><hr>
+<p>[TOC]</p>
+<h2 id="v6-2-0版本基础"><a href="#v6-2-0版本基础" class="headerlink" title="v6.2.0版本基础"></a>v6.2.0版本基础</h2><ul>
+<li>要使代码可运行，需要调整项目根目录下build.gradle中两个maven仓库的顺序，因为有个GifView的库在第一个maven库”<a href="https://jitpack.io&quot;中有错误，但在第二个maven库&quot;http://oss.sonatype.org/content/repositories/snapshots/&quot;中可以使用。" target="_blank" rel="noopener">https://jitpack.io&quot;中有错误，但在第二个maven库&quot;http://oss.sonatype.org/content/repositories/snapshots/&quot;中可以使用。</a></li>
+</ul>
+<h4 id="DDS—GeoJsonClusteringActivity：聚合1万多个Point-Geometry-示例。-mapbox聚合只能聚合只含有Point的geojson，若geojson中含有LineString、-Polygon都将无法聚合。"><a href="#DDS—GeoJsonClusteringActivity：聚合1万多个Point-Geometry-示例。-mapbox聚合只能聚合只含有Point的geojson，若geojson中含有LineString、-Polygon都将无法聚合。" class="headerlink" title="DDS—GeoJsonClusteringActivity：聚合1万多个Point Geometry 示例。 mapbox聚合只能聚合只含有Point的geojson，若geojson中含有LineString、 Polygon都将无法聚合。"></a>DDS—GeoJsonClusteringActivity：聚合1万多个Point Geometry 示例。 mapbox聚合只能聚合只含有Point的geojson，若geojson中含有LineString、 Polygon都将无法聚合。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 在新建Source时，除了添加source_id, source_resource, 传入下面第三个参数</span><br><span class="line">      New GeoJsonOptions().withCluster(true).withClusterMaxZoom(14).withClusterRadius(50)</span><br><span class="line"></span><br><span class="line">      &#x2F;&#x2F; 获取聚合个数</span><br><span class="line">      Expression pointCount &#x3D; toNumber(get(&quot;point_count&quot;)); </span><br><span class="line"></span><br><span class="line">      &#x2F;&#x2F; 根据需要添加Layer(一般三个层)</span><br><span class="line">      a.  &quot;unclustered-points&quot;: 没有聚合在一起的Point正常显示的Layer</span><br><span class="line">      b.  &quot;cluster-&quot; + i      : 针对不同情况聚合在一起显示的Layer，例如通过pointCount来判断在那个范围显示哪个颜色</span><br><span class="line">      c.  &quot;count&quot;             : 通过 &quot;&#123;point_count&#125;&quot; 来显示文字个数</span><br></pre></td></tr></table></figure>
+<h4 id="DDS—AddRainFallStyleActivity：数据时间推移"><a href="#DDS—AddRainFallStyleActivity：数据时间推移" class="headerlink" title="DDS—AddRainFallStyleActivity：数据时间推移"></a>DDS—AddRainFallStyleActivity：数据时间推移</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 利用VectorSource加载 &quot;mapbox:&#x2F;&#x2F;shenhongissky.6vm8ssjm&quot;</span><br><span class="line">VectorSource vectorSource &#x3D; new VectorSource(&quot;moji-source&quot;, &quot;mapbox:&#x2F;&#x2F;shenhongissky.6vm8ssjm&quot;);</span><br><span class="line">mapboxMap.addSource(vectorSource);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 添加FillLayer</span><br><span class="line">layer &#x3D; new FillLayer(&quot;moji-layer&quot;, &quot;moji-source&quot;);</span><br><span class="line">layer.withSourceLayer(&quot;whole&quot;);                      &#x2F;&#x2F; 这句不懂，很难很难</span><br><span class="line">layer.setFilter(eq((get(&quot;idx&quot;)), literal(0)));       &#x2F;&#x2F; 获取Source中&quot;idx&quot;字段对应值和 字面意思的&quot;0&quot; 相同即可</span><br><span class="line">layer.setProperties(PropertyFactory.visibility(VISIBLE),</span><br><span class="line">      fillColor(interpolate(Expression.exponential(1f),    &#x2F;&#x2F; 指数函数变化，但传值是1f，其实相当于线性变化linear()</span><br><span class="line">        get(&quot;value&quot;),										 &#x2F;&#x2F; Source中获取value值，根据值在下面stop中选择颜色</span><br><span class="line">        stop(8, Expression.rgb(20, 160, 240)),</span><br><span class="line">        stop(18, Expression.rgb(20, 190, 240)),</span><br><span class="line">        stop(36, Expression.rgb(20, 220, 240)),</span><br><span class="line">        stop(54, Expression.rgb(20, 250, 240)),</span><br><span class="line">        stop(72, Expression.rgb(20, 250, 160)),</span><br><span class="line">        stop(90, Expression.rgb(135, 250, 80)),</span><br><span class="line">        stop(108, Expression.rgb(250, 250, 0)),</span><br><span class="line">        stop(126, Expression.rgb(250, 180, 0)),</span><br><span class="line">        stop(144, Expression.rgb(250, 110, 0)),</span><br><span class="line">        stop(162, Expression.rgb(250, 40, 0)),</span><br><span class="line">        stop(180, Expression.rgb(180, 40, 40)),</span><br><span class="line">        stop(198, Expression.rgb(110, 40, 80)),</span><br><span class="line">        stop(216, Expression.rgb(80, 40, 110)),</span><br><span class="line">        stop(234, Expression.rgb(50, 40, 140)),</span><br><span class="line">        stop(252, Expression.rgb(20, 40, 170))</span><br><span class="line">        )</span><br><span class="line">      ),</span><br><span class="line">      PropertyFactory.fillOpacity(0.7f));                  &#x2F;&#x2F; 透明度</span><br><span class="line">    	mapboxMap.addLayer(layer);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 利用Handler，Runnable以及FillLayer.setFilter来不断刷新Layer，自增index到40后重新置0</span><br><span class="line">a.  handler确保一秒中执行一次runnable</span><br><span class="line">b.  runnable中改变setFilter并将index自增</span><br><span class="line">c.  layer.setFilter(eq((get(&quot;idx&quot;)), literal(index)));   &#x2F;&#x2F; 获取Source中&quot;idx&quot;字段对应值和 字面意思的index 相同即可</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="DDS-BathymetryActivity-等水深区域使用FillLayer显示，并显示geojson文件中的水深数字"><a href="#DDS-BathymetryActivity-等水深区域使用FillLayer显示，并显示geojson文件中的水深数字" class="headerlink" title="DDS-BathymetryActivity : 等水深区域使用FillLayer显示，并显示geojson文件中的水深数字"></a>DDS-BathymetryActivity : 等水深区域使用FillLayer显示，并显示geojson文件中的水深数字</h4><pre><code>略(太简单)</code></pre><h4 id="Lab-MarkerFollowingRouteActivity-：-marker随着路线移动"><a href="#Lab-MarkerFollowingRouteActivity-：-marker随着路线移动" class="headerlink" title="Lab-MarkerFollowingRouteActivity ： marker随着路线移动"></a>Lab-MarkerFollowingRouteActivity ： marker随着路线移动</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 加载本地数据利用AsyncTask</span><br><span class="line">a.  doInBackground中将assets下的geojson文件转为String，利用Json解析获取路线集合</span><br><span class="line">b.  doPostExecute中将路线集合利用Polyline添加到地图上</span><br><span class="line">c.  利用Handler和Runnable，通过ValueAnimator不断更新Marker位置</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F; 距离计算</span><br><span class="line">	distance &#x3D; (long) marker.getPosition().distanceTo(points.get(count)) * 10;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F; 属性动画创建</span><br><span class="line">	ValueAnimator markerAnimator &#x3D; ObjectAnimator.ofObject(marker, &quot;position&quot;,</span><br><span class="line">                new LatLngEvaluator(), marker.getPosition(), points.get(count));</span><br><span class="line">          markerAnimator.setDuration(distance);  &#x2F;&#x2F; 动画执行时长就是上面计算distance</span><br><span class="line">          markerAnimator.setInterpolator(new LinearInterpolator());</span><br><span class="line">          markerAnimator.start();</span><br><span class="line"></span><br><span class="line">          &#x2F;&#x2F; 刷新Marker</span><br><span class="line">          map.getMarkerViewManager().update();</span><br><span class="line"></span><br><span class="line">          &#x2F;&#x2F; handler循环执行</span><br><span class="line">          handler.postDelayed(this, distance);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Layer"><a href="#Layer" class="headerlink" title="Layer"></a>Layer</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 虚线绘制，后面传Float数组，数组第一个值为实线长度，第二个值为间隔虚线长度</span><br><span class="line">lineDasharray(new Float[]&#123;5f, 1f&#125;)      </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 双线条设置，其实是设置中间空心的宽度</span><br><span class="line">lineGapWidth(6.2f)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 控制Layer隐藏显示</span><br><span class="line">   PropertyFactory.visibility(Property.NONE)</span><br><span class="line">   </span><br><span class="line">   &#x2F;&#x2F; 设置CircleLayer边缘模糊</span><br><span class="line">   PropertyFactory.circleBlur(1f)</span><br><span class="line"></span><br><span class="line">   &#x2F;&#x2F; Expression构造</span><br><span class="line">   interpolate();    &#x2F;&#x2F; 最最难, 暂时不写, 它的构造需要下面的简单构造拼凑使用</span><br><span class="line"></span><br><span class="line">   match();          &#x2F;&#x2F; 传三参, 参数1: 数据源，例如get(&quot;congestion&quot;)；</span><br><span class="line">   				  &#x2F;&#x2F; 参数2: 返回的默认值</span><br><span class="line">   				  &#x2F;&#x2F; 参数3: 可列参数，stop()对象, 各种值返回对应需求</span><br><span class="line"></span><br><span class="line">   step();           &#x2F;&#x2F; 传三参, 类似于match(), 但是它的返回值不像match那么固定, 是在值的范围之间来确定取哪个需求</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   exponential(1f);  &#x2F;&#x2F; 指数函数变化                      linear();          &#x2F;&#x2F; 线性函数变化</span><br><span class="line">   zoom();           &#x2F;&#x2F; 根据地图缩放级别变化               get(&quot;filed&quot;);      &#x2F;&#x2F; 根据filed的内容获取在Source中它对应的值</span><br><span class="line">   stop();           &#x2F;&#x2F; 阶段值设置						  eq();              &#x2F;&#x2F; 相当于String的equals</span><br><span class="line">   gte();            &#x2F;&#x2F; 大于等于						  lte();             &#x2F;&#x2F; 小于等于</span><br><span class="line">   gt();             &#x2F;&#x2F; 大于                             lt();              &#x2F;&#x2F; 小于</span><br><span class="line">   literal(&quot;content&quot;)&#x2F;&#x2F; 将内容直接转为Expression          rgba();            &#x2F;&#x2F; 构造颜色</span><br><span class="line">   neq();            &#x2F;&#x2F; 不相同                           all();             &#x2F;&#x2F; 由eq,neq,gte,lte,gt,lt中的两个或两个以上构造</span><br><span class="line">   toNumber();       &#x2F;&#x2F; 经内容转为数字                    toColor();         &#x2F;&#x2F; 将String转为ColorInt</span><br><span class="line">   color();          &#x2F;&#x2F; 传ColorInt</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Mapbox导航"><a href="#Mapbox导航" class="headerlink" title="Mapbox导航"></a>Mapbox导航</h2><ul>
+<li>问题1：我们的mapbox aar包在引用mapbox-android-navigation后access_token无法通过验证<ul>
+<li>问题2：使用mapbox sdk加载我们的地图样式后无法添加文字Layer，即textField(“content”)</li>
+</ul>
+</li>
+<li>问题3：使用我们的mapbox aar加载我们的地图样式后无法添加文字Layer，即textField(“content”)<ul>
+<li>问题4：mapbox sdk最新版本7.3.2没有对StyleUrl的设置，只能通过代码mapBoxMap.setStyle()设置样式，addSource和addLayer都要通过mapBoxMap.getStyle()来添加</li>
+</ul>
+</li>
+<li>问题5：实例化NavigationMapboxMap(mapbox导航UI对象）需要theme继承NavigationViewLight或者NavigationViewDark，或者写自己的样式，但要定义和导航相关的属性</li>
+<li>问题6：0.36.0 导航版本，failed to connect to api.mapbox.com/13.35.13.134 (port 443) after 10000ms 获取导航路线失败，这是由于地图样式需要是mapbox的</li>
+</ul>
+<h4 id="导航UI关键类介绍"><a href="#导航UI关键类介绍" class="headerlink" title="导航UI关键类介绍"></a>导航UI关键类介绍</h4><ul>
+<li><p>NavigationMapboxMap: 管理UI的总类</p>
+<ul>
+<li>drawRoutes()     画路线方法</li>
+</ul>
+</li>
+<li><p>NavigationMapRoute： 具体画路线的类</p>
+<ul>
+<li>addRoutes()      画路线方法</li>
+</ul>
+</li>
+<li><p>MapRouteLine：       定义线的颜色，样式等等，并画</p>
+</li>
+<li><p>MapRouteDrawableProvider：    导航路线需要的drawable资源提供者</p>
+</li>
+<li><p>MapRouteSourceProvider  ：    Mapbox Source提供者</p>
+</li>
+<li><p>MapRouteLayerProvider   ：    Mapbox Layer提供者</p>
+</li>
+<li><p>MapRouteArrow：      未看到在UI上的具体体现</p>
+</li>
+<li><p>MapRouteClickListener：    导航路线单击事件</p>
+</li>
+<li><p>MapRouteProgressChangeListener：    导航路线进度变化事件</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">   &#x2F;**</span><br><span class="line">   * origin: 起点Point</span><br><span class="line">   * destination: 终点Point</span><br><span class="line">   * bearing: 起点位置的起始角度</span><br><span class="line">   * BEARING_TOLERANCE: 起点角度容忍误差，常量90.0</span><br><span class="line">   * accessToken: 在Mapbox官网申请的Key</span><br><span class="line">   * alternatives: 可供选择的路线，是否获取多条路线</span><br><span class="line">   * this: 一个回调Callback&lt;DirectionsResponse&gt;</span><br><span class="line">   *&#x2F;</span><br><span class="line">   private fun find(location: Location, destination: Point) &#123;</span><br><span class="line">    val origin &#x3D; Point.fromLngLat(location.longitude, location.latitude)</span><br><span class="line">    val bearing &#x3D; location.bearing.toDouble()</span><br><span class="line">    NavigationRoute.builder(NavigationApplication.instance)</span><br><span class="line">            .accessToken(accessToken)</span><br><span class="line">            .origin(origin, bearing, BEARING_TOLERANCE)</span><br><span class="line">            .destination(destination)</span><br><span class="line">            .alternatives(true)</span><br><span class="line">            .build()</span><br><span class="line">            .getRoute(this)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">4418502.256927514  465792.63280210644    |   4419364.046259624  380272.2526359856</span><br><span class="line">4418502.256927514  465792.63280210644    |   4419364.046259624  380272.2526359856</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="v6-2-1版本基础"><a href="#v6-2-1版本基础" class="headerlink" title="v6.2.1版本基础"></a>v6.2.1版本基础</h2><h4 id="直接运行Demo可正常运行"><a href="#直接运行Demo可正常运行" class="headerlink" title="直接运行Demo可正常运行"></a>直接运行Demo可正常运行</h4><h4 id="dds-InfoWindowSymbolLayerActivity-地图上的点-增加自定义的InfoWindow"><a href="#dds-InfoWindowSymbolLayerActivity-地图上的点-增加自定义的InfoWindow" class="headerlink" title="dds-InfoWindowSymbolLayerActivity(地图上的点 增加自定义的InfoWindow)"></a>dds-InfoWindowSymbolLayerActivity(地图上的点 增加自定义的InfoWindow)</h4><ul>
+<li><p>在地图已加载方法中 通过 GeoJson方式加载点图层（SymbolLayer） 和 InfoWindow图层</p>
+</li>
+<li><p>塑造数据源：FeatureCollection （AsnyTask中）</p>
+<ul>
+<li><p>geoJson文件塑造成String方式，通过FeatureCollection.fromJson(geoJson)获取FeatureCollection;</p>
+</li>
+<li><p>赋值给所有Feature, seleted字段为 false（弹出窗口的状态）</p>
+</li>
+</ul>
+</li>
+<li><p>设置数据源： 设置Source Image(Marker图标) MarkerLayer InfoWindowLayer</p>
+<ul>
+<li><p>设置Source<br>  GeoJsonSource source = new GeoJsonSource(geojsonSourceId, featureCollection);<br>  mapboxMap.addSource(source);</p>
+</li>
+<li><p>Image(Marker图标)<br>  Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.drawable.red_marker);<br>  mapboxMap.addImage(MARKER_IMAGE_ID, icon);</p>
+</li>
+<li><p>mapboxMap.addLayer(new SymbolLayer(MARKER_LAYER_ID, geojsonSourceId)<br>  .withProperties(</p>
+<pre><code>- iconImage(MARKER_IMAGE_ID),//用于绘制图像背景的sprite图像的名称。
+- iconAllowOverlap(true)//如果为 true, 则图标将可见, 即使它与其他以前绘制的符号碰撞。</code></pre><p>  ));</p>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>- InfoWindowLayer</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mapboxMap.addLayer(new SymbolLayer(CALLOUT_LAYER_ID, geojsonSourceId)</span><br><span class="line">.withProperties(</span><br><span class="line">  iconImage(&quot;&#123;name&#125;&quot;),&#x2F;&#x2F;用于绘制图像背景的sprite图像的名称。</span><br><span class="line">  iconAnchor(ICON_ANCHOR_BOTTOM), &#x2F;&#x2F;图标的锚点（左右上下、左上、右上、左下、右下 ）    </span><br><span class="line">  iconAllowOverlap(true), &#x2F;&#x2F;如果为 true, 则图标将可见, 即使它与其他以前绘制的符号碰撞      </span><br><span class="line">  iconOffset(new Float[] &#123;-2f, -25f&#125;)&#x2F;&#x2F;设置图标距其定位点的偏移距离 正值表示右下, 负值表示左和上。当与iconRotate(java.lang.Float)组合时, &#x2F;&#x2F;偏移量旋转的方向是向上的。第一个参数表示左（负数）右（正数）、第一个参数表示上（负数）下（正数）</span><br><span class="line">)</span><br><span class="line">.withFilter(eq((get(PROPERTY_SELECTED)), literal(true))));&#x2F;&#x2F;设置过滤器 当geojson中属性为true的Source显示</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>dds-GeoJsonClusteringActivity 点聚合功能</p>
+<ul>
+<li>问题：我们的地图不支持聚合，mapbox的地图支持，Feture如下:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mapbox： &#123;&quot;geometry&quot;:&#123;&quot;coordinates&quot;:[-74.02587890625,-37.23470197166816],&quot;type&quot;:&quot;Point&quot;&#125;,&quot;id&quot;:&quot;&quot;,&quot;properties&quot;:&#123;&quot;point_count&quot;:7,&quot;cluster&quot;:true&#125;,&quot;type&quot;:&quot;Feature&quot;&#125;</span><br><span class="line">mapscloud:&#123;&quot;geometry&quot;:&#123;&quot;coordinates&quot;:[-68.26904296875,-38.28131307922966],&quot;type&quot;:&quot;Point&quot;&#125;,&quot;id&quot;:&quot;&quot;,&quot;properties&quot;:&#123;&quot;time&quot;:1506387869490,&quot;id&quot;:&quot;us2000avl1&quot;,&quot;felt&quot;:4,&quot;tsunami&quot;:0,&quot;mag&quot;:4.099999904632568&#125;,&quot;type&quot;:&quot;Feature&quot;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>PropertyValue<T>获取方式通过： PropertyFactory 为图层构造paint/layout属性</p>
+</li>
+</ul>
+<ul>
+<li>Expression 表达式 （把各种属性 类型转化为表达式）</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">参数说明</th>
+<th align="left">绘制值格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">literal()</td>
+<td align="left">参数：1个 Number String boolean Object Object[]</td>
+<td align="left">返回：转换为表达式</td>
+</tr>
+<tr>
+<td align="left">color()</td>
+<td align="left">参数：1个 int (Color.GREEN)</td>
+<td align="left">返回：表达式  fillColor(color(Color.GREEN))</td>
+</tr>
+<tr>
+<td align="left">rgb()</td>
+<td align="left">参数：3个 Expression(红绿蓝表达式) Number</td>
+<td align="left">返回：表达式  fillColor(rgb(literal(255.0f), literal(255.0f),literal(255.0f)))</td>
+</tr>
+<tr>
+<td align="left">rgba()</td>
+<td align="left">参数：4个 表达式 Number</td>
+<td align="left">返回：Expression    fillColor(rgb(255.0f, 255.0f, 255.0f, 1.0f))</td>
+</tr>
+<tr>
+<td align="left">toRgba</td>
+<td align="left">参数：1个 颜色表达式</td>
+<td align="left">返回：Expression 返回一个包含输入颜色的红、绿、蓝和alpha组件的四元素数组，按顺序排列</td>
+</tr>
+<tr>
+<td align="left">eq</td>
+<td align="left">参数：2个 第一个参数：表达式  第二个参数：表达式、boolean、String、Number</td>
+<td align="left">返回：第一参数和第二个参数相同返回 true 否则相反</td>
+</tr>
+<tr>
+<td align="left">neq</td>
+<td align="left">参数：2个 第一个参数：表达式  第二个参数：表达式、boolean、String、Number</td>
+<td align="left">返回：第一参数和第二个参数不相同返回 true 否则相反</td>
+</tr>
+<tr>
+<td align="left">gt</td>
+<td align="left">参数：2个 第一个参数：表达式  第二个参数：表达式、String、Number</td>
+<td align="left">返回：如果第一个大于第二个输入，则返回true，否则返回false   &gt;</td>
+</tr>
+<tr>
+<td align="left">lt</td>
+<td align="left">参数：2个 第一个参数：表达式  第二个参数：表达式、String、Number</td>
+<td align="left">返回：如果第一个输入小于第二个输入，则返回true，否则返回false  &lt;</td>
+</tr>
+<tr>
+<td align="left">gte</td>
+<td align="left">参数：2个 第一个参数：表达式  第二个参数：表达式、String、Number</td>
+<td align="left">返回：如果第一个输入大于或等于第二个输入，则返回true，否则返回false  &gt;=</td>
+</tr>
+<tr>
+<td align="left">lte</td>
+<td align="left">参数：2个 第一个参数：表达式  第二个参数：表达式、String、Number</td>
+<td align="left">返回：如果第一个输入小于或等于第二个输入，则返回true，否则返回false  &lt;=</td>
+</tr>
+<tr>
+<td align="left">all</td>
+<td align="left">参数：n个 Expression</td>
+<td align="left">返回：如果所有输入都为true，则返回true，否则返回false</td>
+</tr>
+<tr>
+<td align="left">any</td>
+<td align="left">参数：n个 Expression</td>
+<td align="left">返回：如果任何输入为“true”，则返回“true”，否则返回“false”</td>
+</tr>
+<tr>
+<td align="left">not</td>
+<td align="left">参数：1个 Expression/boolean</td>
+<td align="left">返回：逻辑的否定。如果输入为“false”，返回“true”;如果输入为“true”，返回“false”</td>
+</tr>
+<tr>
+<td align="left">switchCase</td>
+<td align="left">参数：n个 Expression 最少1个</td>
+<td align="left">返回：选择对应的测试条件为true的第一个输出       iconSize( switchCase( get(KEY_TO_BOOLEAN), literal(3.0f), get(KEY_TO_OTHER_BOOLEAN), literal(5.0f) literal(1.0f) // default value    ))</td>
+</tr>
+<tr>
+<td align="left">match</td>
+<td align="left">参数：n个 Expression 最少2个</td>
+<td align="left">返回：选择标签值与输入值匹配的输出，如果没有找到匹配，则选择回退值 match(get(“keyToValue”), literal(1), rgba(255, 0, 0, 1.0f),literal(2), rgba(0, 0, 255.0f, 1.0f),rgba(0.0f, 255.0f, 0.0f, 1.0f));</td>
+</tr>
+<tr>
+<td align="left">coalesce</td>
+<td align="left">参数：n个 Expression</td>
+<td align="left">返回：依次计算每个表达式，直到获得第一个非空值，并返回该值</td>
+</tr>
+<tr>
+<td align="left">properties</td>
+<td align="left">参数：Void</td>
+<td align="left">返回：获取properties Expression对象symbolLayer.setProperties(textField(get(“key-to-value”, properties()))));</td>
+</tr>
+<tr>
+<td align="left">geometryType</td>
+<td align="left">参数：Void</td>
+<td align="left">返回：获取feature的几何类型Expression:点、多点、线字符串、多线字符串、多边形、多多边形 textField(concat(get(“key-to-value”), literal(“ “), geometryType())</td>
+</tr>
+<tr>
+<td align="left">id()</td>
+<td align="left">参数：Void</td>
+<td align="left">返回：获取feature的id(如果它有) symbolLayer.setProperties(textField(id()));</td>
+</tr>
+<tr>
+<td align="left">heatmapDensity()</td>
+<td align="left">参数：Void</td>
+<td align="left">返回：获取热图层中像素的核密度估计，这是一个相对测量特定像素周围有多少数据点。只能在“heatmap color”属性中使用 HeatmapLayer layer = new HeatmapLayer(“layer-id”, “source-id”); layer.setProperties( heatmapColor(interpolate(linear(), heatmapDensity(),  literal(0), rgba(33, 102, 172, 0),  literal(0.2), rgb(103, 169, 207), literal(0.4), rgb(209, 229, 240),  literal(0.6), rgb(253, 219, 199), literal(0.8), rgb(239, 138, 98),  literal(1), rgb(178, 24, 43)  ) )</td>
+</tr>
+<tr>
+<td align="left">at</td>
+<td align="left">参数：2个 第一个参数：数组中的index Expression/Number   第二个参数：array数组 Expression</td>
+<td align="left">返回：从数组中检索某一项</td>
+</tr>
+<tr>
+<td align="left">get</td>
+<td align="left">参数：1个 input Expression/String</td>
+<td align="left">返回：从当前feature的属性中检索属性值，或来自另一个对象，如果提供了第二个参数。如果缺少所请求的属性，则返回null（Expression）</td>
+</tr>
+<tr>
+<td align="left">get</td>
+<td align="left">参数：2个 第一个参数：a property value key  String/Expression   第二个参数：an expression object(Expression)</td>
+<td align="left">返回：从当前object的属性中检索属性值</td>
+</tr>
+<tr>
+<td align="left">has</td>
+<td align="left">参数：1个 Expression/String key</td>
+<td align="left">返回：测试当前特性属性中是否存在属性值</td>
+</tr>
+<tr>
+<td align="left">has</td>
+<td align="left">参数：2个 第一个参数：a property value key  String/Expression   第二个参数：an expression object(Expression)</td>
+<td align="left">返回：从当前object的属性中检索是否存在属性值</td>
+</tr>
+<tr>
+<td align="left">length</td>
+<td align="left">参数：1个 an expression object or expression string</td>
+<td align="left">返回：获取数组或字符串的长度</td>
+</tr>
+</tbody></table>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>ln2()   pi<br> e()   sum  product乘积  subtract 0-某个数  division除   mod 将第一个输入的整数除以第二个输入后的余数  pow(x,y)x的y次方  sqrt(x) x的平方<br> log10  ln log2 ….<br> toString<br> toArray()<br> zoom()  获取当前缩放级别<br> stop()  产生一个停止值<br> step()  阶段性变化  通过计算由对定义的分段常数函数，得到离散的、阶跃的结果<br> interpolate() 内插 通过在输入和输出值(\“stop”)之间插入，生成连续的、<br> linear() 在小于和大于输入的两个停止点之间进行线性插值<br> exponential() 在小于和大于输入的点之间进行指数插值<br> cubicBezier() 使用给定控制点定义的三次贝塞尔曲线插值</p>
+<h2 id="自己总结："><a href="#自己总结：" class="headerlink" title="自己总结："></a>自己总结：</h2><h4 id="添加图层的流程"><a href="#添加图层的流程" class="headerlink" title="添加图层的流程"></a>添加图层的流程</h4><ul>
+<li>构建geometry （点 线 面、多点 多线 多面），多个构建geometry为GeometryCollection</li>
+<li>构建Feature</li>
+<li>构建Source  (sourceId,feature）（图像、自定义Geometry、栅格dem、栅格、矢量、不知道）</li>
+<li>source添加到mapbox中</li>
+<li>创建Layer (layerId,sourceId)</li>
+<li>layer添加到mapbox中</li>
+</ul>
+<h4 id="Source-Layer"><a href="#Source-Layer" class="headerlink" title="Source Layer"></a>Source Layer</h4><table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CustomGeometrySource</td>
+<td align="left">自定义矢量源，允许使用FeatureCollections</td>
+</tr>
+<tr>
+<td align="left">ImageSource</td>
+<td align="left">图像源，允许在地图上显示地理参考光栅图像(地理参考图像随着用户缩放和旋转地图而缩放和旋转。光栅图像内容的地理位置，随“latlngquad”提供，可以是非轴对齐的)</td>
+</tr>
+<tr>
+<td align="left">GeoJsonSource</td>
+<td align="left">geojson源，允许使用来自json的featurecollections。</td>
+</tr>
+<tr>
+<td align="left">RasterDemSource</td>
+<td align="left">光栅DEM源。当前仅支持Mapbox Terrain RGB（mapbox://mapbox.terrain-rgb）</td>
+</tr>
+<tr>
+<td align="left">RasterSource</td>
+<td align="left">光栅源，允许使用光栅平铺作为源。</td>
+</tr>
+<tr>
+<td align="left">VectorSource</td>
+<td align="left">矢量源，允许使用矢量块。</td>
+</tr>
+<tr>
+<td align="left">UnknownSource</td>
+<td align="left">An unknown type of source</td>
+</tr>
+<tr>
+<td align="left">BackgroundLayer</td>
+<td align="left">地图的背景色或图案 (是地图的背景色)</td>
+</tr>
+<tr>
+<td align="left">CircleLayer</td>
+<td align="left">A filled circle.（不会随地图缩放而缩放）</td>
+</tr>
+<tr>
+<td align="left">CustomLayer</td>
+<td align="left">自定义层。实验特性。不要使用。</td>
+</tr>
+<tr>
+<td align="left">FillExtrusionLayer</td>
+<td align="left">一个挤出的（三维）多边形。</td>
+</tr>
+<tr>
+<td align="left">FillLayer</td>
+<td align="left">具有可选边界的填充多边形。</td>
+</tr>
+<tr>
+<td align="left">HeatmapLayer</td>
+<td align="left">热图图层</td>
+</tr>
+<tr>
+<td align="left">HillshadeLayer</td>
+<td align="left">基于dem数据的客户端山体阴影可视化。目前，该实现仅支持mapbox terrain rgb和 mapzen terrarium tiles。</td>
+</tr>
+<tr>
+<td align="left">LineLayer</td>
+<td align="left">线图层</td>
+</tr>
+<tr>
+<td align="left">RasterLayer</td>
+<td align="left">栅格图层</td>
+</tr>
+<tr>
+<td align="left">symbolLayer</td>
+<td align="left">图标或文本标签图层</td>
+</tr>
+<tr>
+<td align="left">UnknownLayer</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">LatLngQuad</td>
+<td align="left">不规则的多边形</td>
+</tr>
+<tr>
+<td align="left">LatLngBound</td>
+<td align="left">矩形</td>
+</tr>
+<tr>
+<td align="left">PropertyFactory</td>
+<td align="left">构造图层的绘制/布局特性</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>通用属性 </p>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">visibility</td>
+<td align="left">可见度</td>
+</tr>
+<tr>
+<td align="left">Opacity</td>
+<td align="left">透明度</td>
+</tr>
+<tr>
+<td align="left">Gradient</td>
+<td align="left">渐变</td>
+</tr>
+<tr>
+<td align="left">Halo</td>
+<td align="left">环状光晕</td>
+</tr>
+<tr>
+<td align="left">Translate</td>
+<td align="left">根据锚定的中心，上下左偏移</td>
+</tr>
+<tr>
+<td align="left">TranslateAnchor</td>
+<td align="left">锚点</td>
+</tr>
+<tr>
+<td align="left">Blur</td>
+<td align="left">模糊</td>
+</tr>
+<tr>
+<td align="left">Alignment 排列方向</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textOpacity</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textColor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textHaloColor</td>
+<td align="left">文本光晕的颜色，这有助于它从背景中脱颖而出。</td>
+</tr>
+<tr>
+<td align="left">textHaloWidth</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textHaloBlur 光环向外逐渐消失的距离</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textTranslate</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textTranslateAnchor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textPitchAlignment</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textRotationAlignment</td>
+<td align="left">与{@link property.symbol_placement}结合使用，确定形成文本的各个标志符号的旋转行为。</td>
+</tr>
+<tr>
+<td align="left">textField</td>
+<td align="left">用于文本标签的值。如果提供了纯“string”，则将其视为具有默认/继承格式选项的“formatted”。</td>
+</tr>
+<tr>
+<td align="left">textFont</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textSize</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textMaxWidth</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textLineHeight</td>
+<td align="left">用于显示文本的字体堆栈。多行文本的文本前导值。</td>
+</tr>
+<tr>
+<td align="left">textLetterSpacing</td>
+<td align="left">文本跟踪量。</td>
+</tr>
+<tr>
+<td align="left">textJustify</td>
+<td align="left">文本对齐选项。</td>
+</tr>
+<tr>
+<td align="left">textRadialOffset</td>
+<td align="left">文本在符号锚定方向上的径向偏移。与不支持二维{@link propertyfactory{@textfariableanchor}的{@link propertyfactory}结合使用时非常有用。</td>
+</tr>
+<tr>
+<td align="left">textVariableAnchor</td>
+<td align="left">为了增加在地图上放置高优先级标签的机会，您可以提供一个{@ Link属性.TrimeActudi}位置的数组：呈现将尝试在每个位置上放置标签，然后再移动到下一个标签。使用“text justify:auto”根据定位点位置选择对齐方式。要应用偏移量，请使用{@link propertyfactory{textradialoffset}，而不是二维{@link propertyfactory{textoffset}。</td>
+</tr>
+<tr>
+<td align="left">textAnchor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textMaxAngle</td>
+<td align="left">相邻字符之间的最大角度变化。</td>
+</tr>
+<tr>
+<td align="left">textRotate</td>
+<td align="left">顺时针旋转文本。</td>
+</tr>
+<tr>
+<td align="left">textPadding</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">textKeepUpright</td>
+<td align="left">如果为true，则可以垂直翻转文本以防止其被颠倒。</td>
+</tr>
+<tr>
+<td align="left">textTransform</td>
+<td align="left">指定如何大写文本，类似于css{@link propertyfactory\texttransform}属性</td>
+</tr>
+<tr>
+<td align="left">textOffset</td>
+<td align="left">文本与其定位点的偏移距离。正值表示向右和向下，负值表示向左和向上。</td>
+</tr>
+<tr>
+<td align="left">textAllowOverlap</td>
+<td align="left">如果为true，则文本将可见，即使它与以前绘制的其他符号冲突。</td>
+</tr>
+<tr>
+<td align="left">textIgnorePlacement</td>
+<td align="left">如果是真的，即使与文本发生冲突，也可以看到其他符号。</td>
+</tr>
+<tr>
+<td align="left">textOptional</td>
+<td align="left">如果为true，则当文本与其他符号冲突且图标不冲突时，将显示图标而不显示相应的文本。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>点属性</p>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">iconOpacity</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">iconColor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">iconHaloColor</td>
+<td align="left">图标光环的颜色。图标光晕只能与SDF图标一起使用。</td>
+</tr>
+<tr>
+<td align="left">iconHaloWidth</td>
+<td align="left">光晕到图标轮廓的距离。</td>
+</tr>
+<tr>
+<td align="left">iconHaloBlur</td>
+<td align="left">把光环向外面褪去</td>
+</tr>
+<tr>
+<td align="left">iconTranslate</td>
+<td align="left">图标锚定从其原始位置移动的距离。正值表示向右和向下，负值表示向左和向上。</td>
+</tr>
+<tr>
+<td align="left">iconTranslateAnchor</td>
+<td align="left">控制{@link propertyfactory icontranslate}的引用框架。</td>
+</tr>
+<tr>
+<td align="left">iconAllowOverlap</td>
+<td align="left">如果是真的，即使它与其他先兆Drawn   (不管地图如何缩放 其他图标点是否遮盖 此图标时刻都显示)</td>
+</tr>
+<tr>
+<td align="left">iconIgnorePlacement</td>
+<td align="left">如果是真的，即使符号与图标碰撞，也可以看到其他符号。</td>
+</tr>
+<tr>
+<td align="left">iconOptional</td>
+<td align="left">如果真的是这样，文字将显示没有对应图标的图标，而图标与其他Symbols没有对应图案。</td>
+</tr>
+<tr>
+<td align="left">iconRotationAlignment</td>
+<td align="left">结合{@link property.symbol_placement}，确定图标的旋转行为。</td>
+</tr>
+<tr>
+<td align="left">iconSize</td>
+<td align="left">按提供的因子缩放图标的原始大小，图像的新像素将是原像素的六倍乘以{@link PropertyFactory#iconSize} 1是原像素的六倍；图像的六倍</td>
+</tr>
+<tr>
+<td align="left">iconTextFit</td>
+<td align="left">缩放图标以适应相关文本。</td>
+</tr>
+<tr>
+<td align="left">iconTextFitPadding</td>
+<td align="left">按顺时针顺序添加到由{@link property.icon_text_fit}确定的维度的附加区域的大小：top、right、bottom、left。</td>
+</tr>
+<tr>
+<td align="left">iconImage</td>
+<td align="left">sprite中用于绘制图像背景的图像的名称</td>
+</tr>
+<tr>
+<td align="left">iconRotate</td>
+<td align="left">顺时针旋转图标</td>
+</tr>
+<tr>
+<td align="left">iconPadding</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">iconKeepUpright</td>
+<td align="left">如果为true，则可以翻转图标以防止其被颠倒渲染。</td>
+</tr>
+<tr>
+<td align="left">iconOffset</td>
+<td align="left">图标与其锚定的偏移距离。正值表示向右和向下，负值表示向左和向上。每个分量乘以{@link   propertyfactory iconsize}的值，以获得与密度无关的像素的最终偏移量。当与{@ Link PrimePrimeWorksIon Simult}组合时，偏移将如同旋转方向上升一样。</td>
+</tr>
+<tr>
+<td align="left">iconAnchor</td>
+<td align="left">最靠近锚定的图标的一部分。</td>
+</tr>
+<tr>
+<td align="left">iconPitchAlignment</td>
+<td align="left">当地图倾斜时图标的方向。</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<ul>
+<li><p>线属性</p>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">lineOpacity</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">lineColor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">lineTranslate</td>
+<td align="left">几何体的偏移量。值是[x，y]，其中负数分别表示左和上。</td>
+</tr>
+<tr>
+<td align="left">lineTranslateAnchor</td>
+<td align="left">控制{@link propertyfactory linetranslate}的引用框架。</td>
+</tr>
+<tr>
+<td align="left">lineWidth</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">lineGapWidth</td>
+<td align="left">在线的实际路径外绘制线框。值指示内部间隙的宽度。</td>
+</tr>
+<tr>
+<td align="left">lineOffset</td>
+<td align="left">线的偏移量。对于线性特征，正值相对于直线的方向使直线向右偏移，负值相对于直线的方向向左偏移。对于多边形特征，正值将导致插入，负值将导致开始。</td>
+</tr>
+<tr>
+<td align="left">lineBlur</td>
+<td align="left">应用于线条的模糊，以与密度无关的像素为单位。</td>
+</tr>
+<tr>
+<td align="left">lineDasharray</td>
+<td align="left">虚线的间隔设置  new Float[] {10f, 4f}   10f 是实线段长度； 4f是间隔长度。指定形成虚线图案的交替虚线和间隙的长度。这些长度稍后将按线宽缩放。若要将虚线长度转换为与密度无关的像素，请将该长度乘以当前线宽。请注意，指定了“linemetrics:true”的geojson源不会将虚线呈现为预期的比例。还要注意，缩放相关表达式将仅在整数缩放级别计算。</td>
+</tr>
+<tr>
+<td align="left">linePattern</td>
+<td align="left">用于绘制图像线的sprite中的图像的名称。对于无缝图案，图像宽度必须是2的系数（2、4、8、…、512）。请注意，缩放相关表达式将仅在整数缩放级别计算。</td>
+</tr>
+<tr>
+<td align="left">lineGradient</td>
+<td align="left">定义用于为线要素上色的渐变。只能用于GeJSON源，指定“LeeMeimTrime:Trime’”。</td>
+</tr>
+<tr>
+<td align="left">lineCap</td>
+<td align="left">线的两端形状 （圆形round  正方的SQUARE BUTT 没看出区别）</td>
+</tr>
+<tr>
+<td align="left">lineJoin</td>
+<td align="left">是线条的转弯处的形状是什么(圆形round  正方的MITER  中间过渡折线BEVEL)</td>
+</tr>
+<tr>
+<td align="left">lineMiterLimit</td>
+<td align="left">用于自动将斜接转换为斜接以获取锐角。</td>
+</tr>
+<tr>
+<td align="left">lineRoundLimit</td>
+<td align="left">用于自动将圆连接转换为浅角度的斜接连接。</td>
+</tr>
+<tr>
+<td align="left">symbolPlacement</td>
+<td align="left">相对于其几何图形的标签放置。</td>
+</tr>
+<tr>
+<td align="left">symbolSpacing</td>
+<td align="left">两个符号锚定之间的距离。</td>
+</tr>
+<tr>
+<td align="left">symbolAvoidEdges</td>
+<td align="left">如果为true，则符号不会交叉平铺边缘以避免相互碰撞。建议在矢量平铺中没有足够填充以防止冲突的层中使用，或者如果它是放置在线符号层之后的点符号层。</td>
+</tr>
+<tr>
+<td align="left">symbolSortKey</td>
+<td align="left">基于此值按升序排列要素。具有较高排序键的要素重叠时，将显示在具有较低排序键的要素上方。放置时，排序键较低的功能将优先于其他功能</td>
+</tr>
+<tr>
+<td align="left">symbolZOrder</td>
+<td align="left">控制同一层中重叠符号的呈现顺序</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>面属性</p>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">fillAntialias</td>
+<td align="left">填充是否应抗锯齿。</td>
+</tr>
+<tr>
+<td align="left">fillOpacity</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">fillColor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">fillOutlineColor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">fillTranslate</td>
+<td align="left">几何体的偏移量。值是[x，y]，其中负数分别表示左和上。</td>
+</tr>
+<tr>
+<td align="left">fillTranslateAnchor</td>
+<td align="left">控制{@link propertyfactory filltranslate}的引用框架。</td>
+</tr>
+<tr>
+<td align="left">fillPattern</td>
+<td align="left">精灵中用于绘制图像填充的图像的名称。对于无缝图案，图像宽度和高度必须是2的系数（2、4、8、…、512）。请注意，缩放相关表达式将仅在整数缩放级别计算</td>
+</tr>
+<tr>
+<td align="left">circleRadius</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">circleColor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">circleBlur</td>
+<td align="left">等于模糊了圆圈。1模糊圆，因此只有中心点是完全不透明的。</td>
+</tr>
+<tr>
+<td align="left">circleOpacity</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">circleTranslate</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">circleTranslateAnchor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">circlePitchScale</td>
+<td align="left">控制地图倾斜时圆的缩放行为。 （圆圈与地图平面对齐。 圆与视区平面对齐。）</td>
+</tr>
+<tr>
+<td align="left">circlePitchAlignment</td>
+<td align="left">地图倾斜时圆的方向。 （圆圈与地图平面对齐。 圆与视区平面对齐。）</td>
+</tr>
+<tr>
+<td align="left">circleStrokeWidth</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">circleStrokeColor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">circleStrokeOpacity</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">heatmapRadius</td>
+<td align="left">密度无关像素中一个热图点的影响半径。增加该值会使热图更平滑，但细节较少。</td>
+</tr>
+<tr>
+<td align="left">heatmapWeight</td>
+<td align="left">测量单个点对热图贡献的程度。值为10相当于在同一个点上有10个权重1。与群集结合时特别有用。</td>
+</tr>
+<tr>
+<td align="left">heatmapIntensity</td>
+<td align="left">类似于{@link propertyfactory heatmapweight}，但全局控制heatmap的强度。主要用于根据缩放级别调整热图。</td>
+</tr>
+<tr>
+<td align="left">heatmapColor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">heatmapOpacity</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">fillExtrusionOpacity</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">fillExtrusionColor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">fillExtrusionTranslate</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">fillExtrusionTranslateAnchor</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">fillExtrusionPattern</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">fillExtrusionHeight</td>
+<td align="left">挤出此层的高度。</td>
+</tr>
+<tr>
+<td align="left">fillExtrusionBase</td>
+<td align="left">挤出此层底部的高度。必须小于或等于{@Link PropertyFactory FillExtrusionHeight}</td>
+</tr>
+<tr>
+<td align="left">fillExtrusionVerticalGradient</td>
+<td align="left">是否对填充拉伸层的边应用垂直渐变。如果为真，则后面的边将稍微暗一点。</td>
+</tr>
+<tr>
+<td align="left">rasterOpacity</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">rasterHueRotate</td>
+<td align="left">围绕色轮旋转色调</td>
+</tr>
+<tr>
+<td align="left">rasterBrightnessMin</td>
+<td align="left">增加或降低图像的亮度。该值是最小亮度。</td>
+</tr>
+<tr>
+<td align="left">rasterBrightnessMax</td>
+<td align="left">增加或降低图像的亮度。该值是最大亮度</td>
+</tr>
+<tr>
+<td align="left">rasterSaturation</td>
+<td align="left">增加或减少图像的饱和度</td>
+</tr>
+<tr>
+<td align="left">rasterContrast</td>
+<td align="left">增加或减少图像的对比度</td>
+</tr>
+<tr>
+<td align="left">rasterResampling</td>
+<td align="left">用于过缩放的重采样/插值方法，也称为纹理放大过滤器</td>
+</tr>
+<tr>
+<td align="left">rasterFadeDuration</td>
+<td align="left">添加新平铺时淡入淡出持续时间</td>
+</tr>
+<tr>
+<td align="left">hillshadeIlluminationDirection</td>
+<td align="left">山体阴影的光源的方向 ， 如果{@link property.hillshade\u illumination\u anchor}设置为“viewport”，则用于生成以0为视区顶部的山体阴影的光源的方向；如果{@link property.hillshade\u illumination\u anchor}设置为“map”，则为正北。</td>
+</tr>
+<tr>
+<td align="left">hillshadeIlluminationAnchor</td>
+<td align="left">地图旋转时光源的方向。</td>
+</tr>
+<tr>
+<td align="left">hillshadeExaggeration</td>
+<td align="left">山体的强度</td>
+</tr>
+<tr>
+<td align="left">hillshadeShadowColor</td>
+<td align="left">远离光源的区域的阴影颜色。</td>
+</tr>
+<tr>
+<td align="left">hillshadeHighlightColor</td>
+<td align="left">面向光源的区域的着色颜色。</td>
+</tr>
+<tr>
+<td align="left">hillshadeAccentColor</td>
+<td align="left">阴影颜色用来突出崎岖的地形，如陡峭的悬崖和峡谷。</td>
+</tr>
+<tr>
+<td align="left">backgroundColor</td>
+<td align="left">绘制背景的颜色</td>
+</tr>
+<tr>
+<td align="left">backgroundPattern</td>
+<td align="left">用于绘制图像背景的sprite中的图像的名称。对于无缝图案，图像宽度和高度必须是2的系数（2、4、8、…、512）。请注意，缩放相关表达式将仅在整数缩放级别计算。</td>
+</tr>
+<tr>
+<td align="left">backgroundOpacity</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Expression</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">MapView</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">addOnStyleImageMissingListener</td>
+<td align="left">设置在缺少图标ID时调用的回调。  mapboxMap.setLatLngBoundsForCameraTarget(LAKE_BOUNDS);</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h4 id="WoldMap-优化"><a href="#WoldMap-优化" class="headerlink" title="WoldMap 优化"></a>WoldMap 优化</h4><ul>
+<li>经纬网 上下左右多画一屏幕</li>
+<li>九宫格  显示与否 可以根据  设置属性 no  Visible不可以设置表达式 只接受String</li>
+<li>地图加载慢原因： </li>
+<li>MapboxMapOptions 的构建<ul>
+<li>MapView.onCreate地图加载进来后闪一下 重新加载问题 （&lt;=7级 就会闪一下，&gt;7级不会闪）<ul>
+<li>在onMapReady中操作一下Layer，也不会闪了</li>
+<li>根源是样式文件问题：<ul>
+<li>1.”<a href="http://202.107.245.52:10430/v1.0/styles/Global_mbtiles/style.json&quot;" target="_blank" rel="noopener">http://202.107.245.52:10430/v1.0/styles/Global_mbtiles/style.json&quot;</a>; 样式就会闪一下</li>
+<li>2.”<a href="http://119.3.195.167:10430/v1.0/styles/CASmap_style_D2_v4_3D_1/style.json&quot;" target="_blank" rel="noopener">http://119.3.195.167:10430/v1.0/styles/CASmap_style_D2_v4_3D_1/style.json&quot;</a>; 样式就不会闪；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>二维地图</p>
+<ul>
+<li>icon_add_polyline</li>
+<li>icon_map_latlongrid</li>
+<li>icon_map_jgg</li>
+<li>icon_interaction</li>
+</ul>
+</li>
+<li><p>二维小工具</p>
+<ul>
+<li>icon_altitude_calculation</li>
+<li>icon_profile_overview</li>
+<li>icon_positive_calculation </li>
+<li>icon_Inverse_calculation</li>
+<li>icon_snapshot_share</li>
+<li>icon_sheet_search</li>
+<li>icon_annotation_freehand_comment</li>
+<li>icon_annotation_comment</li>
+<li>icon_bbox_elevation</li>
+<li>icon_single_elevation</li>
+<li>icon_sightline_analyse</li>
+<li>icon_beidou_info</li>
+<li>icon_location</li>
+<li>icon_fence</li>
+</ul>
+</li>
+<li><p>专题地图</p>
+<ul>
+<li>icon_theme_list</li>
+<li>icon_theme_net_load</li>
+<li>icon_theme_local_load</li>
+<li>icon_theme_switch</li>
+<li>icon_theme_opacity</li>
+<li>icon_theme_manage</li>
+<li>icon_theme_word_search</li>
+<li>icon_theme_fenlei_search</li>
+<li>icon_theme_shiye_search</li>
+<li>icon_theme_legend_show</li>
+<li>icon_theme_detaildata_show</li>
+</ul>
+</li>
+<li><p>地名搜素</p>
+<ul>
+<li>icon_search_search</li>
+<li>icon_search_area</li>
+<li>icon_search_surround</li>
+<li>icon_search_fenlei</li>
+<li>icon_search_offline_search</li>
+</ul>
+</li>
+<li><p>信息采集</p>
+</li>
+<li><p>坐标转换</p>
+<ul>
+<li>icon_coord_positive_operation</li>
+<li>icon_coord_inverse_operation</li>
+<li>icon_positive_gauss_cal</li>
+<li>Inverse_gauss_cal</li>
+<li>icon_coord_trans_ecef_operation</li>
+<li>icon_coord_ecef_trans_operation</li>
+<li>icon_coord_trans_ellipsoid_operation</li>
+</ul>
+</li>
+<li><p>三维地图</p>
+<ul>
+<li>icon_globe_image</li>
+<li>icon_globe_dem</li>
+<li>icon_globe_annotation</li>
+<li>icon_globe_event</li>
+<li>icon_globe_operate</li>
+<li>icon_globe_layers</li>
+<li>icon_globe_point</li>
+<li>icon_globe_line</li>
+<li>icon_globe_polygon</li>
+<li>icon_globe_model</li>
+<li>icon_globe_tilesy</li>
+<li>icon_globe_theme</li>
+<li>icon_globe_camera</li>
+<li>icon_globe_info</li>
+</ul>
+</li>
+<li><p>三维地图小工具</p>
+<ul>
+<li>icon_globe_tolocation</li>
+<li>icon_globe_leida</li>
+<li>icon_globe_label</li>
+</ul>
+</li>
+</ul>
+<h2 id="三、"><a href="#三、" class="headerlink" title="三、"></a>三、</h2><p>MapFragment  newInstance(MapboxMapOptions)<br>用MapView  MapView(Context, MapboxMapOptions)<br>用XML添加映射，则可以使用自定义XML标记应用这些选项。</p>
+<p>##四、Mapbox和STMapView对比</p>
+<p>STMapView<br>isEnableLimitBox 判断是否启用范围限制框<br>setEnableLimitBox 设置启用限制框<br>getLatitudeSpan 获取纬度范围<br>getLongitudeSpan 获取经度范围<br>getBoundingBox 获取外接矩形框<br>getBoundingBox 获取指定宽高的外接矩形框<br>getScreenRect 获取当前屏幕区域坐标（旋转后的）<br>setMapOrientation 设置地图方向<br>setScrollableAreaLimit 设置移动范围外接矩形框，地图将不能超出这个范围<br>zoomInFixing以固定点为中心放大<br>zoomOutFixing以固定点为中心缩小<br>zoomToSpan缩放到指定范围</p>
+<ul>
+<li><p>跳转  动画跳转<br> 跳转中心点  setMapCenter setCenter<br> 跳转缩放级别<br> 跳转中心点和缩放级别<br> 跳转到矩形框  getScreenRect</p>
+</li>
+<li><p>缩放<br> 缩放到外接矩形框<br> 缩放到固定点（放大 缩小）<br> 缩放到指定范围</p>
+</li>
+</ul>
+<p>getScreenRect<br>setMapCenter<br>adjustZoomLevel<br>setZoomLevel<br>zoomToBoundingBox<br>getZoomlevelByBoundingBox<br>getZoomLevel<br>getMinZoomLevel<br>getMaxZoomLevel<br>canZoomIn<br>getMapCenter<br>isNightMode<br>scrollTo（xy）<br>getMapBoundingBox</p>
+<p>animateToSpan<br>animateTo<br>zoomToSpan<br>scrollBy<br>setCenter<br>setZoom</p>
+</div></article></div></main><footer><div class="paginator"><a href="/2020/06/03/FBS_LGYS/" class="next">下一篇</a></div><div class="copyright"><p>© 2015 - 2020 <a href="http://yoursite.com">Zhh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
