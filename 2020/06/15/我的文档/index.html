@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 我的文档 · Hexo</title><meta name="description" content="我的文档 - Zhh"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="Hexo"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">我的文档</h1><div class="post-info">2020年6月15日</div><div class="post-content"><h1 id="我的文档"><a href="#我的文档" class="headerlink" title="我的文档"></a>我的文档</h1><h2 id="git"><a href="#git" class="headerlink" title="git"></a>git</h2><h3 id="git初始化和提交流程"><a href="#git初始化和提交流程" class="headerlink" title="git初始化和提交流程"></a>git初始化和提交流程</h3><ul>
+<li>git init</li>
+<li>git status</li>
+<li>git add -A</li>
+<li>git commit -m “xxxx”</li>
+<li>git pull</li>
+<li>git push</li>
+</ul>
+<h3 id="git管理地址和初次推送流程"><a href="#git管理地址和初次推送流程" class="headerlink" title="git管理地址和初次推送流程"></a>git管理地址和初次推送流程</h3><ul>
+<li>git remote add origin urllll</li>
+<li>git push –set-upstream origin master</li>
+</ul>
+<h3 id="git排斥不想提交的文件"><a href="#git排斥不想提交的文件" class="headerlink" title="git排斥不想提交的文件"></a>git排斥不想提交的文件</h3><ul>
+<li>git rm -rf –cache xxx.iml</li>
+</ul>
+<h3 id="git关联远程module仓库"><a href="#git关联远程module仓库" class="headerlink" title="git关联远程module仓库"></a>git关联远程module仓库</h3><p>git submodule add urllll filename/<br>or<br>git submodule update –init<br>git submodule sync</p>
+<h3 id="git查看远程仓库地址"><a href="#git查看远程仓库地址" class="headerlink" title="git查看远程仓库地址"></a>git查看远程仓库地址</h3><ul>
+<li>git remote -v<h3 id="本地所有修改的。没有的提交的，都返回到原来的状态"><a href="#本地所有修改的。没有的提交的，都返回到原来的状态" class="headerlink" title="本地所有修改的。没有的提交的，都返回到原来的状态"></a>本地所有修改的。没有的提交的，都返回到原来的状态</h3>git checkout . <h3 id="把所有没有提交的修改暂存到stash里面。可用git-stash-pop回复。"><a href="#把所有没有提交的修改暂存到stash里面。可用git-stash-pop回复。" class="headerlink" title="把所有没有提交的修改暂存到stash里面。可用git stash pop回复。"></a>把所有没有提交的修改暂存到stash里面。可用git stash pop回复。</h3>git stash <h3 id="返回到某个节点，不保留修改。"><a href="#返回到某个节点，不保留修改。" class="headerlink" title="返回到某个节点，不保留修改。"></a>返回到某个节点，不保留修改。</h3>git reset –hard HASH <h3 id="返回到某个节点。保留修改"><a href="#返回到某个节点。保留修改" class="headerlink" title="返回到某个节点。保留修改"></a>返回到某个节点。保留修改</h3>git reset –soft HASH </li>
+</ul>
+<h2 id="gradle"><a href="#gradle" class="headerlink" title="gradle"></a>gradle</h2><ul>
+<li>gradlew clean        清除所有build文件</li>
+<li>gradlew compileDebugJavaWithJavac        检查所有类文件</li>
+<li>gradlew compileDebugSources    检查所有资源文件</li>
+</ul>
+<h2 id="markdown转高质量html（含css，js等）"><a href="#markdown转高质量html（含css，js等）" class="headerlink" title="markdown转高质量html（含css，js等）"></a>markdown转高质量html（含css，js等）</h2><ul>
+<li>配置note.js环境</li>
+<li>在你的md文件目录下，打开命令行工具，安装i5ting_toc：npm install -g i5ting_toc</li>
+<li>执行:i5ting_toc -f xxxx.md -o</li>
+<li>恭喜你，你可以在preview目录中查看你的网页</li>
+<li><a href="https://blog.mapscloud-yy.com/2019/06/14/MTH/#more" target="_blank" rel="noopener">链接地址</a></li>
+</ul>
+<hr>
+<h2 id="android-studio"><a href="#android-studio" class="headerlink" title="android studio"></a>android studio</h2><ul>
+<li>检测资源文件是否有问题：gradlew compileDebugSources</li>
+</ul>
+<p>api ‘com.mapscloud.thememap:theme-library:1.1.1’<br>api ‘com.mapscloud.measuretools:measure-tools-lib:1.1.1’<br>api ‘com.mapscloud.NavigationFramework:NavigationFramework-library:1.1.1’</p>
+<h2 id="github与hexo使用blog"><a href="#github与hexo使用blog" class="headerlink" title="github与hexo使用blog"></a>github与hexo使用blog</h2><ul>
+<li>github新建仓库blog</li>
+<li>blog仓库setting，在github pages中选择风格，完成后setting中就有github pages了</li>
+<li>本地文件找个地方新建文件夹blog</li>
+<li>去hexo.io中执行命令<ul>
+<li>npm install hexo-cli -g</li>
+<li>hexo init blog</li>
+<li>cd blog</li>
+<li>npm install</li>
+<li>hexo server</li>
+</ul>
+</li>
+</ul>
+<h2 id="blog使用"><a href="#blog使用" class="headerlink" title="blog使用"></a>blog使用</h2><ul>
+<li>hexo g 编译</li>
+<li>hexo d 部署</li>
+<li>hexo s 启服务</li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a href="/2020/06/15/%E5%85%A8%E5%9B%BD%E8%87%AA%E7%94%B1%E8%A1%8C%E8%AE%B0%E5%BD%95/" class="next">下一篇</a></div><div class="copyright"><p>© 2015 - 2020 <a href="http://yoursite.com">Zhh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
